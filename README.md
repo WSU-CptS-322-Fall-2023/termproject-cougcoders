@@ -1,5 +1,5 @@
 # CptS 322 Term Project
-### Project Title: 
+### Project Title: Student Research position App
 ### Team Name : CougCoders
 ### Team Members 
 * Chance Bradford
