@@ -223,7 +223,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | Sign in to student account |
 | Postconditions    | User is logged in to student account |
 | Acceptance tests  | Username and email are unique, email is a valid email address |
-| Iteration         | Iteration 1 |
+| Iteration         | Iteration 2 |
 
 
 | Use case # 2      |   |
@@ -237,7 +237,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | Create a student account |
 | Postconditions    | User is logged in to student account |
 | Acceptance tests  | Username and password are valid |
-| Iteration         | Iteration 1 |
+| Iteration         | Iteration 2 |
 
 
 | Use case # 3      |   |
@@ -251,7 +251,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | None |
 | Postconditions    | None |
 | Acceptance tests  | None |
-| Iteration         | Iteration 2 |
+| Iteration         | Iteration 1,3 |
 
 
 | Use case # 4      |   |
@@ -263,7 +263,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Preconditions     | User is logged in, there are open research positions |
 | Actions           | User can see information about the research position including research project title, a brief description of the project goals and objectives, start date and end date, required time commitment, research fields, required programming language experience, a brief  description of other required qualifications, and faculty’s name and contact information.|
 | Alternative paths | None |one |
-| Iteration         | Iteration 2 |
+| Iteration         | Iteration 1 |
 
 
 | Use case # 5      |   |
@@ -277,7 +277,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | None |
 | Postconditions    | User cannot apply to the same position again |
 | Acceptance tests  | Application form contains a brief statement describing why they are interested in this research topic and what they hope to gain by participating in that project along with the name and email of one faculty member who can provide them a reference for the position. |
-| Iteration         | Iteration 2 |
+| Iteration         | Iteration 1 |
 
 
 | Use case # 6      |   |
@@ -291,7 +291,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | None |
 | Postconditions    | None |
 | Acceptance tests  | User has applied to the position |
-| Iteration         | Iteration 2 |
+| Iteration         | Iteration 3 |
 
 
 | Use case # 7      |   |
@@ -305,7 +305,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | None |
 | Postconditions    | User can no longer view their application |
 | Acceptance tests  | User click the confirm button |
-| Iteration         | Iteration 2 |
+| Iteration         | Iteration 3 |
 
 
 | Use case # 9      |   |
@@ -319,7 +319,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | User logs in to their faculty account |
 | Postconditions    | User is logged in to their new account |
 | Acceptance tests  | Username and email is unique and email is a valid email address. Contact information is present |
-| Iteration         | Iteration 3 |
+| Iteration         | Iteration 2 |
 
 
 | Use case # 10      |   |
@@ -333,7 +333,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | Create a faculty account |
 | Postconditions    | User is logged in to faculty account |
 | Acceptance tests  | Username and password are valid |
-| Iteration         | Iteration 3 |
+| Iteration         | Iteration 2 |
 
 
 | Use case # 11      |   |
@@ -347,7 +347,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | None |
 | Postconditions    | Students can apply to the new undergraduate research position |
 | Acceptance tests  | Details of the position includes a research project title, a brief description of the project goals and objectives, start date and end date, required time commitment, research fields, required experience with programming languages, and a brief description of other required qualifications. |
-| Iteration         | Iteration 3 |
+| Iteration         | Iteration 1 |
 
 
 | Use case # 12      |   |
@@ -361,7 +361,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | None |
 | Postconditions    | None |
 | Acceptance tests  | Student has applied for the position |
-| Iteration         | Iteration 3 |
+| Iteration         | Iteration 2 |
 
 
 | Use case # 13      |   |
@@ -375,7 +375,7 @@ You may use the following table template for your use cases. Copy-paste this tab
 | Alternative paths | None |
 | Postconditions    | None |
 | Acceptance tests  | None |
-| Iteration         | Iteration 3 |
+| Iteration         | Iteration 2 |
 
 
 | Use case # 14      |   |
