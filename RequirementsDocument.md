@@ -74,13 +74,13 @@ This document is intended for all stakeholders of the web application. The purpo
 The product specified in the following document is the Student Research Position app. The application allows students looking for undergraduate research positions to view open research positions and professors to post their research positions. Then students can apply through the app to the research positions posted by the professors. This benefits both faculty and students because they can connect in order for the student to gain experience and the professor to obtain willing and interested candidates. The main goal of the application is to connect students with undergraduate research positions and to connect professors with quality candidates for their positions.
 
 
-—---
+
 ## 1.3 Document Overview
 
 
 The requirements document contains a requirements specifications section which specifies the software’s requirements in sufficient detail. This is to allow designers to engineer a system that can satisfy those requirements. A list of customers, users and stakeholders involved. A Use cases section. Use cases are an expansion of users stories which describes a sequence of actions that a user performs to complete a task. Each use case is formatted in a table with iteration labels. A concise list of non-functional requirements. A user interface description. A product backlog, and any references used.
 
-—---
+
 # 2. Requirements Specification
 
 
@@ -170,7 +170,7 @@ e. Research field(s) (e.g., “Machine Learning”, “High Performance Computin
 
 
 
-—---
+
 ## 2.1 Customer, Users, and Stakeholders
 
 
