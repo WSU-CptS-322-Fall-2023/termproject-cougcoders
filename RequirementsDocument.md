@@ -455,9 +455,10 @@ You may use the following table template for your use cases. Copy-paste this tab
 ----
 # 3. User Interface
 
-
-Here you should include the sketches or mockups for the main parts of the interface.
-
+![CamScanner 10-11-2023 10 18n_1](https://github.com/WSU-CptS-322-Fall-2023/termproject-cougcoders/assets/119534848/d1992fec-c5f2-4447-a119-af4cb9238593)
+![CamScanner 10-11-2023 10 18n_2](https://github.com/WSU-CptS-322-Fall-2023/termproject-cougcoders/assets/119534848/47579caa-9334-4753-a97d-9c52eb3d045b)
+![CamScanner 10-11-2023 10 18n_3](https://github.com/WSU-CptS-322-Fall-2023/termproject-cougcoders/assets/119534848/e6c9d9e6-8179-4720-8965-b75f800b02a6)
+![CamScanner 10-11-2023 10 18n_4](https://github.com/WSU-CptS-322-Fall-2023/termproject-cougcoders/assets/119534848/95f9c373-025c-465a-ab8d-62676c090da7)
 
 ----
 # 4. Product Backlog
