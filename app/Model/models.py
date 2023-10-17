@@ -80,15 +80,15 @@ class Faculty(User):
 
 class ResearchPosition(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(64), nullable=True)
-    description = db.Column(db.String(1024), nullable=True)
-    start_date = db.Column(db.DateTime, nullable=True)
-    end_date = db.Column(db.DateTime, nullable=True)
-    time_commitment = db.Column(db.String(64), nullable=True)
-    # research_fields
-    # programming languages
+    title = db.Column(db.String(64), nullable=False)
+    description = db.Column(db.String(1024), nullable=False)
+    start_date = db.Column(db.DateTime, nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
+    time_commitment = db.Column(db.String(64), nullable=False)
+    research_fields = db.Column(db.String(128), nullable=False)
+    languages = db.Column(db.String(128), nullable=True)
     additional_requirements = db.Column(db.String(1024), nullable=True)
-    faculty_id = db.Column(db.Integer, db.ForeignKey("faculty.id"))
+    # faculty_id = db.Column(db.Integer, db.ForeignKey("faculty.id"))
     # students = db.relationship(
     #     "Student", secondary=studentApplicants, backref="research_positions"
     # )

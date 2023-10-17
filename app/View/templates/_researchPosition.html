@@ -1,17 +1,22 @@
 <table class="table table-hover">
     <tr valign="center">
         <td width="10%"> {{position.title}} </td>
-        <td width="50"> Description: {{position.description}}
+        <td width="50">
+            Description: {{position.description}}
             <br>
-            {{position.additional_requirements}}
+            Additional Requirements: {{position.additional_requirements}}
         </td>
         <td width="20%">
-            Start Date: {{position.start_date}}
+            Start Date: {{ moment(position.start_date).format('LLL') }}
             <br>
-            End Date: {{position.end_date}}
+            End Date: {{ moment(position.end_date).format('LLL') }}
         </td>
         <td width="20%">
-            <!-- Programming languages and redearch fields will go here-->
+            Research Fields: {{ position.research_fields }}
+            {% if position.languages %}
+                <br>
+                Programming Languages: {{ position.languages }}
+            {% endif %}
         </td>
     </tr>
 
