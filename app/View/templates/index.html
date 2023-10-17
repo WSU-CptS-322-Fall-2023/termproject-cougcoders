@@ -4,5 +4,8 @@
 {% block app_content %}
 <h1>Student Research Position App</h1>
 
+{% for position in positions %}
+{% include "_researchPosition.html" %}
+{% endfor %}
 
 {% endblock %}
