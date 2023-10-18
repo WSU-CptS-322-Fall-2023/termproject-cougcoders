@@ -16,7 +16,8 @@ def index():
     positions = ResearchPosition.query.all()
     return render_template("index.html", positions=positions)
 
-@routes_blueprint.route('/createposition', methods=['GET', 'POST'])
+
+@routes_blueprint.route("/createposition", methods=["GET", "POST"])
 def createposition():
     form = PositionForm()
     if form.validate_on_submit():
@@ -27,11 +28,12 @@ def createposition():
             end_date=form.end_date.data,
             time_commitment=form.time_commitment.data,
             research_fields=form.research_fields.data,
-            languages=form.languages.data,
-            additional_requirements=form.additional_requirements.data
+            additional_requirements=form.additional_requirements.data,
         )
+        for lang in form.languages.data:
+            position.languages_required.append(lang)
         db.session.add(position)
         db.session.commit()
         flash(f"Position '{form.title.data}' created!")
-        return redirect(url_for('routes.index'))
-    return render_template('createposition.html', title='Create Position', form=form)
+        return redirect(url_for("routes.index"))
+    return render_template("createposition.html", title="Create Position", form=form)

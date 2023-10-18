@@ -7,17 +7,15 @@
             Additional Requirements: {{position.additional_requirements}}
         </td>
         <td width="20%">
-            Start Date: {{ moment(position.start_date).format('LLL') }}
+            Start Date: {{ moment(position.start_date).format('LL') }}
             <br>
-            End Date: {{ moment(position.end_date).format('LLL') }}
+            End Date: {{ moment(position.end_date).format('LL') }}
         </td>
         <td width="20%">
             Research Fields: {{ position.research_fields }}
-            {% if position.languages %}
-                <br>
-                Programming Languages: {{ position.languages }}
-            {% endif %}
+            <br>
+            Programming Languages:
+            {% for language in position.languages_required %} {{ language.name }} {% endfor %}
         </td>
     </tr>
-
 </table>
