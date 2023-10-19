@@ -1,7 +1,7 @@
 <table class="table table-hover">
     <tr valign="center">
         <td width="10%"> {{position.title}} </td>
-        <td width="50">
+        <td width="40">
             Description: {{position.description}}
             <br>
             Additional Requirements: {{position.additional_requirements}}
@@ -17,6 +17,9 @@
             <br>
             Programming Languages:
             {% for language in position.languages_required %} {{ language.name }} {% endfor %}
+        </td>
+        <td width="10%">
+            <a href="{{ url_for('routes.apply', positionid=position.id) }}" class="btn btn-primary">Apply</a>
         </td>
     </tr>
 </table>

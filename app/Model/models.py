@@ -12,14 +12,6 @@ from flask_login import UserMixin
 #     return User.query.get(int(id))
 
 
-studentApplicants = db.Table(
-    "studentApplicants",
-    db.Column("student_id", db.Integer, db.ForeignKey("user.id")),
-    db.Column(
-        "research_position_id", db.Integer, db.ForeignKey("research_position.id")
-    ),
-)
-
 languages = db.Table(
     "languages",
     db.Column(
@@ -71,6 +63,7 @@ class Student(User):
     major = db.Column(db.String(64), nullable=True)
     gpa = db.Column(db.Float, nullable=True)
     graduation_date = db.Column(db.DateTime, nullable=True)
+    applications = db.relationship("Application", backref="student", lazy="dynamic")
 
     __mapper_args__ = {
         "polymorphic_identity": "Student",
@@ -114,13 +107,21 @@ class ResearchPosition(db.Model):
         backref=db.backref("research_positions", lazy="dynamic"),
     )
     additional_requirements = db.Column(db.String(1024), nullable=True)
+    applications = db.relationship("Application", backref="research_position")
     # faculty_id = db.Column(db.Integer, db.ForeignKey("faculty.id"))
-    # students = db.relationship(
-    #     "Student", secondary=studentApplicants, backref="research_positions"
-    # )
 
     def get_students(self):
         return self.students
+
+
+class Application(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    reason = db.Column(db.String(1024), nullable=False)
+    refrence_name = db.Column(db.String(64), nullable=False)
+    refrence_email = db.Column(db.String(64), nullable=False)
+    status = db.Column(db.String(64), nullable=False)
+    student_id = db.Column(db.Integer, db.ForeignKey("student.id"))
+    research_position_id = db.Column(db.Integer, db.ForeignKey("research_position.id"))
 
 
 class ProgrammingLanguage(db.Model):

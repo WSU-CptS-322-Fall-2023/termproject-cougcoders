@@ -3,8 +3,8 @@ from app import db
 
 from flask_login import current_user, login_required
 from config import Config
-from app.Model.models import ResearchPosition, Student, Faculty, User
-from app.Controller.forms import PositionForm
+from app.Model.models import ResearchPosition, Student, Faculty, User, Application
+from app.Controller.forms import PositionForm, ApplicationForm
 
 routes_blueprint = Blueprint("routes", __name__)
 routes_blueprint.template_folder = Config.TEMPLATES_FOLDER
@@ -38,3 +38,28 @@ def createposition():
         flash(f"Position '{form.title.data}' created!")
         return redirect(url_for("routes.index"))
     return render_template("createposition.html", title="Create Position", form=form)
+
+
+@routes_blueprint.route("/apply/<positionid>", methods=["GET", "POST"])
+def apply(positionid):
+    position = ResearchPosition.query.filter_by(id=positionid).first()
+    if position is None:
+        flash("Position does not exist!")
+        return redirect(url_for("routes.index"))
+    form = ApplicationForm()
+    if form.validate_on_submit():
+        application = Application(
+            reason=form.reason.data,
+            refrence_name=form.refrence_name.data,
+            refrence_email=form.refrence_email.data,
+            status="Pending",
+            # student=current_user,
+            research_position=position,
+        )
+        db.session.add(application)
+        db.session.commit()
+        flash("Application submitted!")
+        return redirect(url_for("routes.index"))
+    return render_template(
+        "application.html", title="Apply", form=form, position=position
+    )

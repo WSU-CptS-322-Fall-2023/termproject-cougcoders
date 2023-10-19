@@ -32,3 +32,14 @@ class PositionForm(FlaskForm):
     )
     additional_requirements = StringField("Additional Requirements")
     submit = SubmitField("Create")
+
+
+class ApplicationForm(FlaskForm):
+    reason = TextAreaField(
+        "Reason for Applying", validators=[DataRequired(), Length(max=1024)]
+    )
+    refrence_name = StringField("Faculty Refrence Name", validators=[DataRequired()])
+    refrence_email = StringField(
+        "Faculty Refrence Email", validators=[DataRequired(), Email()]
+    )
+    submit = SubmitField("Apply")
