@@ -30,6 +30,14 @@ languages = db.Table(
     ),
 )
 
+positionFields = db.Table(
+    "positionFields",
+    db.Column("field_id", db.Integer, db.ForeignKey("field.id")),
+    db.Column(
+        "research_position_id", db.Integer, db.ForeignKey("research_position.id")
+    ),
+)
+
 
 class User(UserMixin, db.Model):
     __tablename__ = "user"
@@ -95,7 +103,11 @@ class ResearchPosition(db.Model):
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
     time_commitment = db.Column(db.String(64), nullable=False)
-    research_fields = db.Column(db.String(128), nullable=False)
+    research_fields = db.relationship(
+        "Field",
+        secondary=positionFields,
+        backref=db.backref("research_positions", lazy="dynamic"),
+    )
     languages_required = db.relationship(
         "ProgrammingLanguage",
         secondary=languages,
@@ -112,5 +124,10 @@ class ResearchPosition(db.Model):
 
 
 class ProgrammingLanguage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+
+
+class Field(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))

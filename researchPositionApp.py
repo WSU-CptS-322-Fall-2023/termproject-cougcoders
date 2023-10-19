@@ -9,6 +9,7 @@ from app.Model.models import (
     Student,
     Faculty,
     ProgrammingLanguage,
+    Field,
 )
 
 app = create_app(Config)
@@ -21,6 +22,10 @@ def initDB(*args, **kwargs):
     for lang in langauges:
         if ProgrammingLanguage.query.filter_by(name=lang).first() is None:
             db.session.add(ProgrammingLanguage(name=lang))
+    fields = ["Cybersecurity", "Artificial Intelligence", "Cloud", "Machine Learning"]
+    for field in fields:
+        if Field.query.filter_by(name=field).first() is None:
+            db.session.add(Field(name=field))
     db.session.commit()
 
 

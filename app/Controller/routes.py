@@ -27,11 +27,12 @@ def createposition():
             start_date=form.start_date.data,
             end_date=form.end_date.data,
             time_commitment=form.time_commitment.data,
-            research_fields=form.research_fields.data,
             additional_requirements=form.additional_requirements.data,
         )
         for lang in form.languages.data:
             position.languages_required.append(lang)
+        for field in form.research_fields.data:
+            position.research_fields.append(field)
         db.session.add(position)
         db.session.commit()
         flash(f"Position '{form.title.data}' created!")

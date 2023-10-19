@@ -12,7 +12,8 @@
             End Date: {{ moment(position.end_date).format('LL') }}
         </td>
         <td width="20%">
-            Research Fields: {{ position.research_fields }}
+            Research Fields:
+            {% for field in position.research_fields %} {{ field.name }} {% endfor %}
             <br>
             Programming Languages:
             {% for language in position.languages_required %} {{ language.name }} {% endfor %}
