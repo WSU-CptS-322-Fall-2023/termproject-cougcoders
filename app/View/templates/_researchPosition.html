@@ -19,7 +19,11 @@
             {% for language in position.languages_required %} {{ language.name }} {% endfor %}
         </td>
         <td width="10%">
-            <a href="{{ url_for('routes.apply', positionid=position.id) }}" class="btn btn-primary">Apply</a>
+            {% if not applications | selectattr('research_position_id', 'equalto', position.id) | list %}
+                <a href="{{ url_for('routes.apply', positionid=position.id) }}" class="btn btn-primary">Apply</a>
+            {% else %}
+                <p>You have already applied to this position</p>
+            {% endif %}
         </td>
     </tr>
 </table>

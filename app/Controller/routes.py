@@ -15,7 +15,8 @@ routes_blueprint.template_folder = Config.TEMPLATES_FOLDER
 @login_required
 def index():
     positions = ResearchPosition.query.all()
-    return render_template("index.html", positions=positions)
+    applications = Application.query.filter_by(student_id=current_user.id).all()
+    return render_template("index.html", positions=positions, applications=applications)
 
 
 @routes_blueprint.route("/createposition", methods=["GET", "POST"])
@@ -52,6 +53,10 @@ def apply(positionid):
     if position is None:
         flash("Position does not exist!")
         return redirect(url_for("routes.index"))
+    prev_app = Application.query.filter_by(student_id=current_user.id, research_position_id=positionid).first()
+    if prev_app is not None:
+        flash("You have already applied to that position!")
+        return redirect(url_for("routes.index"))
     form = ApplicationForm()
     if form.validate_on_submit():
         application = Application(
@@ -59,7 +64,7 @@ def apply(positionid):
             refrence_name=form.refrence_name.data,
             refrence_email=form.refrence_email.data,
             status="Pending",
-            # student=current_user,
+            student_id=current_user.id,
             research_position=position,
         )
         db.session.add(application)
