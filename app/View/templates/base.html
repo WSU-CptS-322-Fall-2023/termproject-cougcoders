@@ -29,7 +29,9 @@
                     <li><a href="{{ url_for('auth.student_registration') }}">Student Registration</a></li>
                     <li><a href="{{ url_for('auth.faculty_registration') }}">Faculty Registration</a></li>
                 {% else %}
-                    <li><a href="{{ url_for('routes.createposition') }}">Create Position</a></li>
+                    {% if current_user.user_type == "Faculty" %}
+                        <li><a href="{{ url_for('routes.createposition') }}">Create Position</a></li>
+                    {% endif %}
                     <!-- <li><a href>Profile</a></li> -->
                     <li><a href="{{ url_for('auth.logout') }}">Logout</a></li>
                 {% endif %}
