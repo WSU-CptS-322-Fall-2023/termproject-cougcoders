@@ -19,10 +19,14 @@
             {% for language in position.languages_required %} {{ language.name }} {% endfor %}
         </td>
         <td width="10%">
-            {% if not applications | selectattr('research_position_id', 'equalto', position.id) | list %}
-                <a href="{{ url_for('routes.apply', positionid=position.id) }}" class="btn btn-primary">Apply</a>
-            {% else %}
+            {% if position.faculty_id == current_user.id %}
+                <p>This is your research position</p>
+            {% elif current_user.user_type == "Faculty" %}
+                <p>Faculty members cannot apply to positions</p>
+            {% elif applications | selectattr('research_position_id', 'equalto', position.id) | list %}
                 <p>You have already applied to this position</p>
+            {% else %}
+                <a href="{{ url_for('routes.apply', positionid=position.id) }}" class="btn btn-primary">Apply</a>
             {% endif %}
         </td>
     </tr>

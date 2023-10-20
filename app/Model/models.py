@@ -107,7 +107,7 @@ class ResearchPosition(db.Model):
     )
     additional_requirements = db.Column(db.String(1024), nullable=True)
     applications = db.relationship("Application", backref="research_position")
-    # faculty_id = db.Column(db.Integer, db.ForeignKey("faculty.id"))
+    faculty_id = db.Column(db.Integer, db.ForeignKey("faculty.id"))
 
     def get_students(self):
         return self.students

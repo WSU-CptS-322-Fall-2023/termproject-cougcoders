@@ -34,6 +34,7 @@ def createposition():
             end_date=form.end_date.data,
             time_commitment=form.time_commitment.data,
             additional_requirements=form.additional_requirements.data,
+            faculty_id=current_user.id
         )
         for lang in form.languages.data:
             position.languages_required.append(lang)
