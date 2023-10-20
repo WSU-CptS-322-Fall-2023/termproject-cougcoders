@@ -12,12 +12,14 @@ routes_blueprint.template_folder = Config.TEMPLATES_FOLDER
 
 @routes_blueprint.route("/", methods=["GET"])
 @routes_blueprint.route("/index", methods=["GET"])
+#@login_required
 def index():
     positions = ResearchPosition.query.all()
     return render_template("index.html", positions=positions)
 
 
 @routes_blueprint.route("/createposition", methods=["GET", "POST"])
+#@login_required
 def createposition():
     form = PositionForm()
     if form.validate_on_submit():
@@ -41,6 +43,7 @@ def createposition():
 
 
 @routes_blueprint.route("/apply/<positionid>", methods=["GET", "POST"])
+#@login_required
 def apply(positionid):
     position = ResearchPosition.query.filter_by(id=positionid).first()
     if position is None:

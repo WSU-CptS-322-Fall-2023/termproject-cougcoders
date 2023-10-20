@@ -59,14 +59,16 @@ def login():
             return redirect(url_for('routes.index')) #needs to be redirected to faculty_index
     lform = LoginForm()
     if lform.validate_on_submit():
-        user = User.query_filter_by(username = lform.username.data).first()
+        user = User.query.filter_by(username = lform.username.data).first()
         if(User is None) or (user.check_password(lform.password.data) == False):
             flash('Invalid username or password')
             return redirect(url_for('auth.login'))
         login_user(user, remember = lform.remember_me.data)
         if current_user.user_type == "Student":
+            flash('Successful Student User Login!')
             return redirect(url_for('routes.index')) #needs to be redirected to student_index
         else:
+            flash('Successful Faculty User Login!')
             return redirect(url_for('routes.index')) #needs to be redirected to faculty_index
     return render_template('login.html', title = 'Sign In', form=lform)
 
