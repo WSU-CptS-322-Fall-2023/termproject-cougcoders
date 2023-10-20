@@ -3,13 +3,12 @@ from enum import unique
 from datetime import datetime
 from werkzeug.security import check_password_hash, generate_password_hash
 from flask_login import UserMixin
+from app import login
 
-# from app import login
 
-
-# @login.user_loader
-# def load_user(id):
-#     return User.query.get(int(id))
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 
 languages = db.Table(
