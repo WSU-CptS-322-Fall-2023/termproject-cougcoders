@@ -25,7 +25,7 @@ def faculty_registration():
         faculty.set_password(rform.password.data)
         db.session.add(faculty)
         db.session.commit()
-        flash('you are now a registered Faculty Member!')
+        flash('You are now a registered Faculty Member!')
         return redirect(url_for('routes.index')) #need to route to faculty_index when we create seperate user index pages
     return render_template('faculty_registration.html', form=rform) # need to route to sperate registration html
 
@@ -45,7 +45,7 @@ def student_registration():
         student.set_password(sform.password.data)
         db.session.add(student)
         db.session.commit()
-        flash('you are now a registered student member!')
+        flash('You are now a registered student member!')
         return redirect(url_for('routes.index')) # need to route to student index page
     return render_template('student_registration.html', title='Registration', form=sform) # need to route to sperate registration html
 
@@ -60,7 +60,7 @@ def login():
     lform = LoginForm()
     if lform.validate_on_submit():
         user = User.query.filter_by(username = lform.username.data).first()
-        if(User is None) or (user.check_password(lform.password.data) == False):
+        if(user is None) or (user.check_password(lform.password.data) == False):
             flash('Invalid username or password')
             return redirect(url_for('auth.login'))
         login_user(user, remember = lform.remember_me.data)

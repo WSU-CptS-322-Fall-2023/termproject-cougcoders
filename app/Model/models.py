@@ -39,7 +39,7 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(64), nullable=True)
     last_name = db.Column(db.String(64), nullable=True)
     phone_number = db.Column(db.String(64), nullable=True)
-    wsu_id = db.Column(db.String(64), nullable=True)
+    wsu_id = db.Column(db.String(64), nullable=True, unique=True)
     user_type = db.Column(db.String(64))
 
     __mapper_args__ = {
