@@ -14,7 +14,10 @@ routes_blueprint.template_folder = Config.TEMPLATES_FOLDER
 @routes_blueprint.route("/index", methods=["GET"])
 @login_required
 def index():
-    positions = ResearchPosition.query.all()
+    if current_user.user_type == "Faculty":
+        positions = ResearchPosition.query.filter_by(faculty_id=current_user.id).all()
+    else:
+        positions = ResearchPosition.query.all()
     applications = Application.query.filter_by(student_id=current_user.id).all()
     return render_template("index.html", positions=positions, applications=applications)
 

@@ -2,11 +2,16 @@
 
 
 {% block app_content %}
-<h1>Student Research Position App</h1>
+{% if current_user.user_type == "Faculty" %}
+    <h1>Your Research Positions</h1>
+{% else %}
+    <h1>Available Research Positions</h1>
+{% endif %}
 
 {% if positions | length == 0 %}
     <h3>No positions exist! {% if current_user.user_type == "Faculty" %}<a href="{{ url_for('routes.createposition') }}">Create one!</a>{% else %}Ask a faculty member to create one!{% endif %}</h3>
 {% endif %}
+
 {% for position in positions %}
 {% include "_researchPosition.html" %}
 {% endfor %}
