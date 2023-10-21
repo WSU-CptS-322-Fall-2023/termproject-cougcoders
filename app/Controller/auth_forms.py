@@ -6,10 +6,9 @@ from app.Model.models import User, Student, Faculty
 
 
 class FacultyRegForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('WSU Email', validators=[DataRequired(), Email()])
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
-    email = StringField('WSU Email', validators=[DataRequired(), Email()])
     phoneNum = StringField("Phone Number", validators=[DataRequired()])
     WSU_id = StringField("WSU Id", validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -27,10 +26,9 @@ class FacultyRegForm(FlaskForm):
             raise ValidationError('Email already exists! Please use a different email address.')
         
 class StudentRegForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired()])
+    username = StringField('WSU Email', validators=[DataRequired(), Email()])
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
-    email = StringField('WSU Email', validators=[DataRequired(), Email()])
     phoneNum = StringField("Phone Number", validators=[DataRequired()])
     WSU_id = StringField("WSU Id", validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])

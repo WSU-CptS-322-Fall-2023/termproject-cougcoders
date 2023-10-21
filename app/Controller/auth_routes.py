@@ -17,6 +17,7 @@ def faculty_registration():
     rform = FacultyRegForm()
     if rform.validate_on_submit():
         faculty = Faculty(username=rform.username.data,
+                          email=rform.username.data,
                           first_name=rform.firstname.data,
                           last_name=rform.lastname.data,
                           phone_number=rform.phoneNum.data,
@@ -37,6 +38,7 @@ def student_registration():
     sform = StudentRegForm()
     if sform.validate_on_submit():
         student = Student(username=sform.username.data,
+                          email=sform.username.data,
                           first_name=sform.firstname.data,
                           last_name=sform.lastname.data,
                           phone_number=sform.phoneNum.data,
