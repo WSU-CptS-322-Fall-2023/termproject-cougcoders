@@ -11,6 +11,7 @@
         
     {% endif %}
     <br>
-    <p> New User? <a href="{{ url_for('auth.student_registration') }}"> Click to Register! </a> </p> <!-- need to route to faculty registration page, auto load student page-->
+    <p> New Student? <a href="{{ url_for('auth.student_registration') }}"> Click to Register! </a> </p>
+    <p> New Faculty? <a href="{{ url_for('auth.faculty_registration') }}"> Click to Register! </a> </p>
 
 {% endblock %}

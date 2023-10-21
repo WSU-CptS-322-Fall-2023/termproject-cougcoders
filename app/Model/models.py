@@ -39,7 +39,7 @@ class User(UserMixin, db.Model):
     first_name = db.Column(db.String(64), nullable=True)
     last_name = db.Column(db.String(64), nullable=True)
     phone_number = db.Column(db.String(64), nullable=True)
-    wsu_id = db.Column(db.String(64), nullable=True)
+    wsu_id = db.Column(db.String(64), nullable=True, unique=True)
     user_type = db.Column(db.String(64))
 
     __mapper_args__ = {
@@ -107,7 +107,7 @@ class ResearchPosition(db.Model):
     )
     additional_requirements = db.Column(db.String(1024), nullable=True)
     applications = db.relationship("Application", backref="research_position")
-    # faculty_id = db.Column(db.Integer, db.ForeignKey("faculty.id"))
+    faculty_id = db.Column(db.Integer, db.ForeignKey("faculty.id"))
 
     def get_students(self):
         return self.students

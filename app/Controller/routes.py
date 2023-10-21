@@ -12,15 +12,22 @@ routes_blueprint.template_folder = Config.TEMPLATES_FOLDER
 
 @routes_blueprint.route("/", methods=["GET"])
 @routes_blueprint.route("/index", methods=["GET"])
-#@login_required
+@login_required
 def index():
-    positions = ResearchPosition.query.all()
-    return render_template("index.html", positions=positions)
+    if current_user.user_type == "Faculty":
+        positions = ResearchPosition.query.filter_by(faculty_id=current_user.id).all()
+    else:
+        positions = ResearchPosition.query.all()
+    applications = Application.query.filter_by(student_id=current_user.id).all()
+    return render_template("index.html", positions=positions, applications=applications)
 
 
 @routes_blueprint.route("/createposition", methods=["GET", "POST"])
-#@login_required
+@login_required
 def createposition():
+    if current_user.user_type != "Faculty":
+        flash("You must be a faculty member to create positions!")
+        return redirect(url_for("routes.index"))
     form = PositionForm()
     if form.validate_on_submit():
         position = ResearchPosition(
@@ -30,6 +37,7 @@ def createposition():
             end_date=form.end_date.data,
             time_commitment=form.time_commitment.data,
             additional_requirements=form.additional_requirements.data,
+            faculty_id=current_user.id
         )
         for lang in form.languages.data:
             position.languages_required.append(lang)
@@ -43,11 +51,15 @@ def createposition():
 
 
 @routes_blueprint.route("/apply/<positionid>", methods=["GET", "POST"])
-#@login_required
+@login_required
 def apply(positionid):
     position = ResearchPosition.query.filter_by(id=positionid).first()
     if position is None:
         flash("Position does not exist!")
+        return redirect(url_for("routes.index"))
+    prev_app = Application.query.filter_by(student_id=current_user.id, research_position_id=positionid).first()
+    if prev_app is not None:
+        flash("You have already applied to that position!")
         return redirect(url_for("routes.index"))
     form = ApplicationForm()
     if form.validate_on_submit():
@@ -56,7 +68,7 @@ def apply(positionid):
             refrence_name=form.refrence_name.data,
             refrence_email=form.refrence_email.data,
             status="Pending",
-            # student=current_user,
+            student_id=current_user.id,
             research_position=position,
         )
         db.session.add(application)

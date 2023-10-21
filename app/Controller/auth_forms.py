@@ -6,10 +6,10 @@ from app.Model.models import User, Student, Faculty
 
 
 class FacultyRegForm(FlaskForm):
-    username = StringField('WSU Email', validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired()])
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('WSU Email', validators=[DataRequired(), Email()])
     phoneNum = StringField("Phone Number", validators=[DataRequired()])
     WSU_id = StringField("WSU Id", validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -19,18 +19,18 @@ class FacultyRegForm(FlaskForm):
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('username already exists! Please use a different username.')
+            raise ValidationError('Username already exists! Please use a different username.')
         
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('email already exists! Please use a different email address.')
+            raise ValidationError('Email already exists! Please use a different email address.')
         
 class StudentRegForm(FlaskForm):
-    username = StringField('WSU Email', validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired()])
     firstname = StringField('First Name', validators=[DataRequired()])
     lastname = StringField('Last Name', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    email = StringField('WSU Email', validators=[DataRequired(), Email()])
     phoneNum = StringField("Phone Number", validators=[DataRequired()])
     WSU_id = StringField("WSU Id", validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
@@ -40,16 +40,16 @@ class StudentRegForm(FlaskForm):
     def validate_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
-            raise ValidationError('username already exists! Please use a different username.')
+            raise ValidationError('Username already exists! Please use a different username.')
         
     def validate_email(self, email):
         user = User.query.filter_by(email=email.data).first()
         if user is not None:
-            raise ValidationError('email already exists! Please use a different email address.')
+            raise ValidationError('Email already exists! Please use a different email address.')
 
 
 class LoginForm(FlaskForm):
-    username = StringField('WSU Email', validators=[DataRequired(), Email()])
+    username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember me')
     submit = SubmitField('Sign In')
