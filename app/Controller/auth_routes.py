@@ -28,7 +28,7 @@ def faculty_registration():
         db.session.commit()
         flash('You are now a registered Faculty Member!')
         return redirect(url_for('routes.index')) #need to route to faculty_index when we create seperate user index pages
-    return render_template('faculty_registration.html', form=rform) # need to route to sperate registration html
+    return render_template('faculty_registration.html', title='Faculty Registration', form=rform)
 
 
 @auth_blueprint.route('/student_register', methods=['GET', 'POST'])
@@ -49,7 +49,7 @@ def student_registration():
         db.session.commit()
         flash('You are now a registered student member!')
         return redirect(url_for('routes.index')) # need to route to student index page
-    return render_template('student_registration.html', title='Registration', form=sform) # need to route to sperate registration html
+    return render_template('student_registration.html', title='Student Registration', form=sform)
 
 
 @auth_blueprint.route('/login', methods=['GET', 'POST'])
