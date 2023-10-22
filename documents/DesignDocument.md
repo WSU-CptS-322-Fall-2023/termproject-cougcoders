@@ -38,38 +38,35 @@ Prepared by:
 
 | Name | Date | Changes | Version |
 | ------ | ------ | --------- | --------- |
-|Revision 1 |10-16-2023 |Initial draft | 1.0        |
+|Revision 1 |10-16-2023 |Initial draft | 1.0 |
 |      |      |         |         |
 |      |      |         |         |
 
 
 # 1. Introduction
 
-Explain the purpose for providing this design document. If this is a revision of an earlier document, please make sure to summarize what changes have been made during the revision (keep this discussion brief).
-
-Then provide a brief description of your project and state your project goal.
+The design document's purpose is to descibe the details of our implementation of the application to the stakeholders. 
 
 Our project is a web application designed to allow WSU faculty members to present research opportunities to prospective undergraduate students. There is a need for an online
 platform where faculty can advertise research positions and connect with qualified
 undergraduate students. The 'Student Research Position App' website is aimed at fulfilling this need for both students and faculty.
 
-At the end of the introduction, provide an overview of the document outline.
 
-[Section II](#2-architectural-and-component-level-design) includes …
+***Document Overview***
 
-[Section III](#22-subsystem-design) includes …
+[Section II](#2-architectural-and-component-level-design) Section II of the document includes detailed description of our Architectural and Component-level Design. This section consists of two subsections, system structure (2.1) and subsystem design (2.2). System Structure describes the high-level architecture of our software.
+
+[Section III](#22-subsystem-design) Subsystem design is comprised of three sub components, sections (2.2.1) Model, (2.2.2) Controller, and (2.2.3) View and User Interface Design. Lastly in section three we provide a project and developer progress report.
 
 # 2.	Architectural and Component-level Design
 ## 2.1 System Structure
 
-This section should describe the high-level architecture of your software:  i.e., the major subsystems and how they fit together.
-If you adopted the application structure we used in the Smile App, your application would have the Model-View-Controller (MVC) pattern. If you adopted a different architectural pattern, mention the pattern you adopted in your software and briefly discuss the rationale for using the proposed architecture (i.e., why that pattern fits well for your system).
 
-We choose to adapt and utalize the Model-View-Controller (MVC) architectural design for our application.
-The Model subsystem ...
-The Controller subsystem ...
-The View subsystem ...
-The rationale for utalizing the (MVC) Architectural design is for efficient coupleing of software code. Where parts can be replaced or changed without having to extensively change other parts. We seperate the system into three main componenents model, view, controller subsystems we can make major changes to the overall system with minimal revisions throught the software.
+We choose to adapt and utalize the Model-View-Controller (MVC) architectural design for our application. 
+The Model subsystem is mainly used for storing data and communicating with the database.
+The Controller subsystem perfroms desired actions between the user interface and the database (bridges the view to the model).
+The View subsystem renderes data from the model database into suitable User interface output for specific outcomes. 
+The rationale for utalizing the (MVC) Architectural design is for efficient coupleing of software code and based on previous usage. We seperate the system into three main componenents model, view, controller subsystems. This desgin allows major parts of the software to be replaced or changed without having to extensively revise other parts of the system. 
 
 
 In this section:
@@ -85,7 +82,6 @@ In this section:
 
 ### 2.2.1 Model
 
-Briefly explain the role of the model.
 
 The role of the Model in our system design structure is to manage fundamental behaviors and data of the application. It can request information from the database and also change that very information stored in said database. Model is the functional core, essentially the data and data-management of the application.
 
@@ -144,11 +140,9 @@ We utalize a user table model which holds the main components of both the facult
 
 (***in iteration -2***) Revise the database model. Provide a UML diagram of your database model showing the associations and relationships among tables. Your UML diagram should also show the methods of your models.
 
-**utalize bullet points**
 
 ### 2.2.2 Controller
 
-Briefly explain the role of the controller. If your controller is decomposed into smaller subsystems (similar to the Smile App design we discussed in class), list each of those subsystems as subsections.
 
 The controller subsystem receives user input and makes calls to model objects and the view through forms to perform the required actions. Determines interaction of models and views, essentially defines application behavior. The controller is decomposed into smaller subsystems, one component is the authorization form control which includes the login, logout, and registration forms for both faculty and student users. Another component is the controller routes for User interface interactions. This includes the routes for creating and applying to research position applications, editing user information, toggeling between pages etc...
 
@@ -195,7 +189,7 @@ You can use the following table template to list your route specifications.
 
 Briefly explain the role of the view. **Explain how you plan to build the user interfaces** and mention the frameworks/libraries you plan to use (e.g., Bootstrap).
 
-The view subsystem provides the user interface element of the application. It will render data from the model into a form suitable for each specific user interface. Our view subsystem will include Bootstap framework to support the User interface design of the templates.
+The view subsystem provides the user interface element of the application. It will render data from the model into a form suitable for each specific user interface. Our view subsystem will include Bootstap framework to support the User interface design of the view templates. 
 
 Provide a list of the page templates you plan to create (or you already created). Briefly describe the information that will be displayed on those pages and the forms that will be rendered (i.e., explain the input and output for each page). Make sure to mention which use-cases in your “Requirements Specification” document will utilize these interfaces for user interaction. You can supplement your description with UI sketches or screenshots.
 
@@ -219,37 +213,32 @@ Provide a list of the page templates you plan to create (or you already created)
 
 * Application - Used by students and faculty members to view information about an application to a research position, will render the application_edit form to edit the application's status.
 
-(***in iteration-1***) Brainstorm with your team members and identify the pages that you think should be created.  If you included most of the major pages, it will be acceptable.
 
-(***in iteration-2***) Revise your page list and descriptions and include any additional pages that you will include in your view.  In iteration-2, you will be deducted points if your view description is still superficial and doesn't list and explain all pages of your application.
+<!-- (***in iteration-2***) Revise your page list and descriptions and include any additional pages that you will include in your view.  In iteration-2, you will be deducted points if your view description is still superficial and doesn't list and explain all pages of your application. -->
 
 
 # 3. Progress Report
-
-Write a short paragraph summarizing your progress in iteration1 / iteration2.
 
 **Iteration1**
 
 Progress for iteration1 is suffiecient. Model and view components have started development addressing several use-cases in our software progression. Each team member has contributed meaningful work towards the project goal. Effective team work has been facilitated in brainstorming architectural design and project documentation. Team member communication is superb and timely. Design and implementation of the controller subsystem is in progress and needs further work.
 
-# 4. Testing Plan
+<!-- **Iteration2**
+Write a short paragraph summarizing your progress in iteration2. -->
 
-(***in iteration 1***)
+<!-- 
+# 4. Testing Plan -->
+
+<!-- (***in iteration 1***)
 Don't include this section.
 
 (***in iteration 2***)
 In this section , provide a brief description of how you plan to test the system. Thought should be given to  mostly how automatic testing can be carried out, so as to maximize the limited number of human hours you will have for testing your system. Consider the following kinds of testing:
   * *Unit Testing*: Explain for what modules you plan to write unit tests, and what framework you plan to use.  (Each team should write automated tests (at least) for testing the routes)
   * *Functional Testing*: How will you test your system to verify that the use cases are implemented correctly?
-  * *UI Testing*: How do you plan to test the user interface?  (Manual tests are OK)
+  * *UI Testing*: How do you plan to test the user interface?  (Manual tests are OK) -->
 
 # 5. References
-
-Cite your references here.
-
-For the papers you cite give the authors, the title of the article, the journal name, journal volume number, date of publication and inclusive page numbers. Giving only the URL for the journal is not appropriate.
-
-For the websites, give the title, author (if applicable) and the website URL.
 
 - In-class lectures
 - Reference slides and pages from Canvas
