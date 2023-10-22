@@ -1,0 +1,2 @@
+FLASK_APP=researchPositionApp.py
+FLASK_DEBUG=1

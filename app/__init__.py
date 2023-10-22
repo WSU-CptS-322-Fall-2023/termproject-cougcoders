@@ -5,11 +5,10 @@ from flask_login import LoginManager
 from flask_moment import Moment
 from flask_bootstrap import Bootstrap
 
-
 db = SQLAlchemy()
 bootstrap = Bootstrap()
-# login = LoginManager()
-# login.login_view = "auth.login"
+login = LoginManager()
+login.login_view = "auth.login"
 moment = Moment()
 
 
@@ -20,7 +19,8 @@ def create_app(config_class=Config):
     app.template_folder = Config.TEMPLATES_FOLDER
 
     db.init_app(app)
-    # login.init_app(app)
+    #security.init_app(app)
+    login.init_app(app)
     moment.init_app(app)
     bootstrap.init_app(app)
 
@@ -34,4 +34,5 @@ def create_app(config_class=Config):
     from app.Controller.routes import routes_blueprint as routes
 
     app.register_blueprint(routes)
+
     return app
