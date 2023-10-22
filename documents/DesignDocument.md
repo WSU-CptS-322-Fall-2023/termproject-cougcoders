@@ -39,7 +39,7 @@ Prepared by:
 | Name | Date | Changes | Version |
 | ------ | ------ | --------- | --------- |
 |Revision 1 |10-16-2023 |Initial draft | 1.0 |
-|      |      |         |         |
+|Revision 1.1 |10-22-2023|Iteraton1 revision  | 1.1 |
 |      |      |         |         |
 
 
@@ -76,16 +76,13 @@ In this section:
 
 ## 2.2 Subsystem Design
 
-(**Note1**: This is just a suggested template. If you adopted a pattern other than MVC, you should revise this template and the list the major subsystems in your architectural design.)
-
-(**Note2**: You should describe the design for the end product (completed application) - not only your iteration1 version. You will revise this document in iteration-2 and make changes  and/or add more details in iteration-2.)
+<!-- (**Note2**: You should describe the design for the end product (completed application) - not only your iteration1 version. You will revise this document in iteration-2 and make changes  and/or add more details in iteration-2.) -->
 
 ### 2.2.1 Model
 
 
 The role of the Model in our system design structure is to manage fundamental behaviors and data of the application. It can request information from the database and also change that very information stored in said database. Model is the functional core, essentially the data and data-management of the application.
 
-(***in iteration-1***) Include a list of the tables (models) in your database and explain the role of each table. Provide the attributes of the tables (including relationships).
 
   * User - The User table model hold the faculty and student model common traits.
     - `id` - The sequential, auto-incrementing primary key for the user
@@ -138,7 +135,7 @@ The role of the Model in our system design structure is to manage fundamental be
 
 We utalize a user table model which holds the main components of both the faculty and student sub class models. Student and Faculty classes inherite common components of the User superclass. These model classes promote cohesion by sharing common traits and properties. Using a super class 'User' makes it easier to expand the database and create other user models is needed.
 
-(***in iteration -2***) Revise the database model. Provide a UML diagram of your database model showing the associations and relationships among tables. Your UML diagram should also show the methods of your models.
+<!-- (***in iteration -2***) Revise the database model. Provide a UML diagram of your database model showing the associations and relationships among tables. Your UML diagram should also show the methods of your models. -->
 
 
 ### 2.2.2 Controller
@@ -146,20 +143,19 @@ We utalize a user table model which holds the main components of both the facult
 
 The controller subsystem receives user input and makes calls to model objects and the view through forms to perform the required actions. Determines interaction of models and views, essentially defines application behavior. The controller is decomposed into smaller subsystems, one component is the authorization form control which includes the login, logout, and registration forms for both faculty and student users. Another component is the controller routes for User interface interactions. This includes the routes for creating and applying to research position applications, editing user information, toggeling between pages etc...
 
-For each subsystem:
+<!-- For each subsystem:
  * Explain the role of the subsystem (component) and its responsibilities.
  * 	Provide a detailed description of the subsystem interface, i.e.,
     * which other subsystems does it interact with?
     * what are the interdependencies between them?
+ -->
+<!-- **Note:** Some of your subsystems will interact with the Web clients (browsers). Make sure to include a detailed description of the routes your application will implement. For each route specify its “methods”, “URL path”, and “a description of the operation it implements”.
+You can use the following table template to list your route specifications. -->
 
-**Note:** Some of your subsystems will interact with the Web clients (browsers). Make sure to include a detailed description of the routes your application will implement. For each route specify its “methods”, “URL path”, and “a description of the operation it implements”.
-You can use the following table template to list your route specifications.
+<!-- (***in iteration-1***) Brainstorm with your team members and identify all routes you need to implement for the completed application and explain each route briefly. If you included most of the major routes but you missed only a few, it maybe still acceptable. -->
 
-(***in iteration-1***) Brainstorm with your team members and identify all routes you need to implement for the completed application and explain each route briefly. If you included most of the major routes but you missed only a few, it maybe still acceptable.
 
- **MAJOR PART OF THIS Iteration 1(detailed route descriptions)**
-
-(***in iteration-2***) Revise your route specifications, add the missing routes to your list, and update the routes you modified. Make sure to provide sufficient detail for each route. In iteration-2, you will be deducted points if you don’t include all major routes needed for implementing the required use-cases or if you haven’t described them in detail.
+<!-- (***in iteration-2***) Revise your route specifications, add the missing routes to your list, and update the routes you modified. Make sure to provide sufficient detail for each route. In iteration-2, you will be deducted points if you don’t include all major routes needed for implementing the required use-cases or if you haven’t described them in detail. -->
 
 #### Main routes
 
@@ -187,11 +183,9 @@ You can use the following table template to list your route specifications.
 
 ### 2.2.3 View and User Interface Design
 
-Briefly explain the role of the view. **Explain how you plan to build the user interfaces** and mention the frameworks/libraries you plan to use (e.g., Bootstrap).
 
 The view subsystem provides the user interface element of the application. It will render data from the model into a form suitable for each specific user interface. Our view subsystem will include Bootstap framework to support the User interface design of the view templates. 
 
-Provide a list of the page templates you plan to create (or you already created). Briefly describe the information that will be displayed on those pages and the forms that will be rendered (i.e., explain the input and output for each page). Make sure to mention which use-cases in your “Requirements Specification” document will utilize these interfaces for user interaction. You can supplement your description with UI sketches or screenshots.
 
 * Base - Used for applying common html or bootstrap design to each web page, no form rendered. This template also includes the navigation bar, which has links and buttons used for navigating the application and authenticating users.
 
