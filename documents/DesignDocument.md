@@ -69,10 +69,8 @@ The View subsystem renderes data from the model database into suitable User inte
 The rationale for utalizing the (MVC) Architectural design is for efficient coupleing of software code and based on previous usage. We seperate the system into three main componenents model, view, controller subsystems. This desgin allows major parts of the software to be replaced or changed without having to extensively revise other parts of the system. 
 
 
-In this section:
- * ==Provide a UML component diagram== that illustrates the architecture of your software.
- * Briefly mention the role of each subsystem in your architectural design.
- * Discuss the rationale for the proposed decomposition in terms of coupling and re-use.
+![UML_Component_Diagram](https://github.com/WSU-CptS-322-Fall-2023/termproject-cougcoders/assets/119534848/fc56587b-2a69-4c88-a48a-7f93e9025c8e)
+
 
 ## 2.2 Subsystem Design
 
