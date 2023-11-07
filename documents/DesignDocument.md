@@ -40,7 +40,7 @@ Prepared by:
 | ------ | ------ | --------- | --------- |
 |Revision 1 |10-16-2023 |Initial draft | 1.0 |
 |Revision 1.1 |10-22-2023|Iteraton1 revision  | 1.1 |
-|      |      |         |         |
+|Revision 2.0 |11-7-2023 |Iteration2 draft | 2.0    |
 
 
 # 1. Introduction
@@ -62,11 +62,11 @@ undergraduate students. The 'Student Research Position App' website is aimed at 
 ## 2.1 System Structure
 
 
-We choose to adapt and utalize the Model-View-Controller (MVC) architectural design for our application. 
+We chose to adapt and utalize the Model-View-Controller (MVC) architectural design for our application. 
 The Model subsystem is mainly used for storing data and communicating with the database.
 The Controller subsystem perfroms desired actions between the user interface and the database (bridges the view to the model).
-The View subsystem renderes data from the model database into suitable User interface output for specific outcomes. 
-The rationale for utalizing the (MVC) Architectural design is for efficient coupleing of software code and based on previous usage. We seperate the system into three main componenents model, view, controller subsystems. This desgin allows major parts of the software to be replaced or changed without having to extensively revise other parts of the system. 
+The View subsystem renders data from the model database into suitable user interface output for specific outcomes. 
+The rationale for utalizing the (MVC) architectural design is for efficient coupling of software code and based on previous usage. We seperate the system into three main componenents model, view, controller subsystems. This desgin allows major parts of the software to be replaced or changed without having to extensively revise other parts of the system. 
 
 
 ![UML_Component_Diagram](https://github.com/WSU-CptS-322-Fall-2023/termproject-cougcoders/assets/119534848/fc56587b-2a69-4c88-a48a-7f93e9025c8e)
@@ -82,7 +82,7 @@ The rationale for utalizing the (MVC) Architectural design is for efficient coup
 The role of the Model in our system design structure is to manage fundamental behaviors and data of the application. It can request information from the database and also change that very information stored in said database. Model is the functional core, essentially the data and data-management of the application.
 
 
-  * User - The User table model hold the faculty and student model common traits.
+  * User - The User table model holds the faculty and student model common traits.
     - `id` - The sequential, auto-incrementing primary key for the user
     - `email` - The user's WSU email
     - `password_hash` - The hash of the user's password in the database
@@ -101,7 +101,7 @@ The role of the Model in our system design structure is to manage fundamental be
     - `graduation_date` - The user's expected graduation date
     - `applications` - A one-to-many relationship representing the research positions that the student has created
 
-  * ResearchPosition - The ResearchPosition table represents an available resaerch position and holds
+  * ResearchPosition - The ResearchPosition table represents an available research position and holds
     - `id` - The sequential, auto-incrementing primary key for the research position
     - `title` - The short name of the research positions
     - `description` - A detailed explanation of the research position
@@ -111,7 +111,7 @@ The role of the Model in our system design structure is to manage fundamental be
     - `research_fields` - The relevant research fields for the position
     - `languages_required` - The programming languages that the student should be competent in
     - `additional_requirements` - Any other requirements that the professor would like applicants to have
-    - `applications` - A one-to-many relationship repreqenting submitted applications for the position
+    - `applications` - A one-to-many relationship representing submitted applications for the position
     - `faculty_id` - A foreign-key representing the faculty member that created the position
 
   * Application - The Application table represents a student-submitted application for a research field
@@ -127,7 +127,7 @@ The role of the Model in our system design structure is to manage fundamental be
     - `id` - The sequential, auto-incrementing primary key for the progamming language
     - `name` - The programming language's name
 
-  * Field - The Field relationship represents a research fields that a resaerch position would fit
+  * Field - The Field relationship represents a research fields that a research position would fit
     - `id` - The sequential, auto-incrementing primary key for the field
     - `name` - The short name of the research field
 
@@ -141,17 +141,10 @@ We utalize a user table model which holds the main components of both the facult
 
 The controller subsystem receives user input and makes calls to model objects and the view through forms to perform the required actions. Determines interaction of models and views, essentially defines application behavior. The controller is decomposed into smaller subsystems, one component is the authorization form control which includes the login, logout, and registration forms for both faculty and student users. Another component is the controller routes for User interface interactions. This includes the routes for creating and applying to research position applications, editing user information, toggeling between pages etc...
 
-<!-- For each subsystem:
- * Explain the role of the subsystem (component) and its responsibilities.
- * 	Provide a detailed description of the subsystem interface, i.e.,
-    * which other subsystems does it interact with?
-    * what are the interdependencies between them?
- -->
+
+
 <!-- **Note:** Some of your subsystems will interact with the Web clients (browsers). Make sure to include a detailed description of the routes your application will implement. For each route specify its “methods”, “URL path”, and “a description of the operation it implements”.
 You can use the following table template to list your route specifications. -->
-
-<!-- (***in iteration-1***) Brainstorm with your team members and identify all routes you need to implement for the completed application and explain each route briefly. If you included most of the major routes but you missed only a few, it maybe still acceptable. -->
-
 
 <!-- (***in iteration-2***) Revise your route specifications, add the missing routes to your list, and update the routes you modified. Make sure to provide sufficient detail for each route. In iteration-2, you will be deducted points if you don’t include all major routes needed for implementing the required use-cases or if you haven’t described them in detail. -->
 
@@ -176,7 +169,7 @@ You can use the following table template to list your route specifications. -->
 | `GET`, `POST` | `/student_register` | On a `GET` request, will render the student registration form. On a `POST` request, the submitted form is validated, and if validation succeeds, the student account is created.
 | `GET`, `POST` | `/login` | On a `GET` request, will render the login form that both students and faculty can use. On a `POST` request, the submitted form is validated by checking that the username and password matches a user account, and if validation succeeds, the user is logged in to the account.
 | `GET` | `/logout` | If the user is logged in, they are immediately logged out of their account and they must log back in to perform any actions.
-| `GET`, `POST` | `/profile` | On a `GET` request, will render the profile form that both students and faculty can use to edit their profile. On a `POST` request, the submitted form is validated, and if validation succeeds, the user's account is edited to their specifications.
+| `GET`, `POST` | `/profile` | On a `GET` request, will render the profile form that both students and faculty can use to edit their profile. On a `POST` request, the submitted form is validated, and if validation succeeds, the user's account is edited to their specifications. This may be split into two different routes ('/student_profile', '/faculty_profile') dependent on user type as each user has different profile attributes.
 
 
 ### 2.2.3 View and User Interface Design
@@ -185,15 +178,15 @@ You can use the following table template to list your route specifications. -->
 The view subsystem provides the user interface element of the application. It will render data from the model into a form suitable for each specific user interface. Our view subsystem will include Bootstap framework to support the User interface design of the view templates. 
 
 
-* Base - Used for applying common html or bootstrap design to each web page, no form rendered. This template also includes the navigation bar, which has links and buttons used for navigating the application and authenticating users.
+* Base - Used for applying common html or bootstrap design to each web page. This template also includes the navigation bar, which has links and buttons used for navigating the application and authenticating users. Renders the Student or Faculty route form like a "home page". Redirects to Base after successful user login.
 
-* Index - The home page for user interface, will render two version, one will render the User Interface for student model users and another will render the faculty user form. The version of UI will be determined be a queery to the User database.
+* Index - The home page for user interface, will render two version, one will render the User Interface for student model users and another will render the faculty user form. The version of UI will be determined be a queery to the User database. This will be implemented later and adjustments to Base will reflect the changes.
 
-* Research Position - The research position template is used to render a single research position including its attributes.
+* Research Position - The research position template is used to render a single research position including its attributes. 
 
-* Create Reseacrh Position - The create research position template is used by faculty memebers to create research positions, will render the create_position form.
+* Create Research Position - The create research position template is used by faculty members to create research positions, will render the create_position form. Only A faculty User can view this page.
 
-* Apply - The apply template will render the apply form used by students to submit an application to a research position.
+* Apply - The apply template will render the application form used by students to submit an application to a research position. Only Student user can view this page.
 
 * Login - Used for both student and faculty login, will render the authform login form for login of student and faculty models.
 
@@ -201,10 +194,9 @@ The view subsystem provides the user interface element of the application. It wi
 
 * Faculty Registration - Used by faculty to register an account, will render the faculty_registration form used by the faculty model.
 
-* Profile - Used by students and faculty to view informatino about their account, will render the profile form used to edit the profile.
+* Profile - Used by students and faculty to view information about their account, will render the profile form used to edit the profile. Will have different attributes based on user type. This view may be split into two different views if the profile route is split based on user-type eg. (faculty_profile, student_profile).
 
-* Application - Used by students and faculty members to view information about an application to a research position, will render the application_edit form to edit the application's status.
-
+* Application - Used by students and faculty members to view information about an application to a research position, will render the application_edit form to edit the application's status. 
 
 <!-- (***in iteration-2***) Revise your page list and descriptions and include any additional pages that you will include in your view.  In iteration-2, you will be deducted points if your view description is still superficial and doesn't list and explain all pages of your application. -->
 
@@ -215,15 +207,26 @@ The view subsystem provides the user interface element of the application. It wi
 
 Progress for iteration1 is suffiecient. Model and view components have started development addressing several use-cases in our software progression. Each team member has contributed meaningful work towards the project goal. Effective team work has been facilitated in brainstorming architectural design and project documentation. Team member communication is superb and timely. Design and implementation of the controller subsystem is in progress and needs further work.
 
-<!-- **Iteration2**
-Write a short paragraph summarizing your progress in iteration2. -->
+**Iteration2**
+
+Progress for iteration2 is less than optimal due to time constraints of the development team members. Necessary documentation has been completed and more use-cases have been addressed in this sprint. Team member communication is timely and verbose as before. Team work on brainstorming for testing has been productive and complete. Implememntation of all the routes for the models will need further improvments for the next sprint (Iteration3). Contorller and view subsystems implementation needs further work.
+**Main Difficulties:** A major difficulty is time constraints and scheduling of development team members. This has made it difficult to make significant progress on Iteration2. Some desired features will be pushed to Iteration3 because of this.
+**Features:** Student and faculty Profile route and view has been added allowing both users to view and edit their profile information. Some form information is blank as it's not created in user registration. 
+**Tests:** The testing plan has been facilitated. Implementation and verification of all tests will be executed in Iteration3 sprint. Testing of Iteration2 funtionality has been conducted manually. 
+
+
+# 4. Testing Plan 
+
+For testing, Our team has deicded to implement unittests with Python Unittests for testing the model subsytem and Pytest for testing the controller subsystem. The Unittests will be whitebox tests hence tests will be designed and conducted by the development team which has knowledge of system implementation. For testing the controller subsystem we will utilize the Python Pytest framework for creating route test automation. View subsystem tests will be paired with model and route tests as possible depended-on-component(DOC) that our system-under-test(SUT) needs for from verification psossibly. Otherwise for UI Testing we will manually test the view pages.
+
+**Test Coverage:** 
+A test method for each model and each route will be implemented. Some routes and models utilize the view pages so we can test the view congruently. Each test framework will create the application and intitalize it before conducting automated tests. 
+**Model Unittests:** Each model in the model subsystem will have a method for testing with one or more test cases for each method. We will use assertions to compare expected output of the test cases with actual output. Most cases will include equal to and true/false assertions for verification.
+**Route PyUnit:** Each route in the controller subsystem will have a method for testing with one or more test cases each method. We will use assertions to compare expected output of the test cases with actual output. Most cases will include equal to and true/false assertions for verification. For **GET request** inputs we will test the route/path URl and parameters of the route. For output we will check status-code (eg. 200 is success, else unsuccessful) and html content that should be displayed. For **POST request** inputs we will test the path URL, parameters of the route, and post data. For output we check the status-code (eg. 200 is success, else unsuccessful) check the state after update, check the html content to be displayed either a flash message or the html page where it redirected. 
+
+Design and implementation of all test will be conducted in iteration 3 sprint as well as automated runs of said tests for verification. Regression and Boundry testing will be considered.
 
 <!-- 
-# 4. Testing Plan -->
-
-<!-- (***in iteration 1***)
-Don't include this section.
-
 (***in iteration 2***)
 In this section , provide a brief description of how you plan to test the system. Thought should be given to  mostly how automatic testing can be carried out, so as to maximize the limited number of human hours you will have for testing your system. Consider the following kinds of testing:
   * *Unit Testing*: Explain for what modules you plan to write unit tests, and what framework you plan to use.  (Each team should write automated tests (at least) for testing the routes)
