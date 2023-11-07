@@ -37,7 +37,7 @@ def createposition():
             end_date=form.end_date.data,
             time_commitment=form.time_commitment.data,
             additional_requirements=form.additional_requirements.data,
-            faculty_id=current_user.id
+            faculty_id=current_user.id,
         )
         for lang in form.languages.data:
             position.languages_required.append(lang)
@@ -57,7 +57,9 @@ def apply(positionid):
     if position is None:
         flash("Position does not exist!")
         return redirect(url_for("routes.index"))
-    prev_app = Application.query.filter_by(student_id=current_user.id, research_position_id=positionid).first()
+    prev_app = Application.query.filter_by(
+        student_id=current_user.id, research_position_id=positionid
+    ).first()
     if prev_app is not None:
         flash("You have already applied to that position!")
         return redirect(url_for("routes.index"))
@@ -77,4 +79,23 @@ def apply(positionid):
         return redirect(url_for("routes.index"))
     return render_template(
         "application.html", title="Apply", form=form, position=position
+    )
+
+
+@routes_blueprint.route("/viewapplications/<positionid>", methods=["GET"])
+@login_required
+def viewapplications(positionid):
+    position = ResearchPosition.query.filter_by(id=positionid).first()
+    if position is None:
+        flash("Position does not exist!")
+        return redirect(url_for("routes.index"))
+    if current_user.user_type != "Faculty":
+        flash("You must be a faculty member to view applications!")
+        return redirect(url_for("routes.index"))
+    applications = Application.query.filter_by(research_position_id=positionid).all()
+    return render_template(
+        "viewapplications.html",
+        title="View Applications",
+        applications=applications,
+        position=position,
     )
