@@ -137,7 +137,7 @@ The role of the Model in our system design structure is to manage fundamental be
 
 We utilize a user table model which holds the main components of both the faculty and student sub class models. Student and Faculty classes inherite common components of the User superclass. These model classes promote cohesion by sharing common traits and properties. Using a super class 'User' makes it easier to expand the database and create other user models is needed.
 
-<!-- (***in iteration -2***) Revise the database model. Provide a UML diagram of your database model showing the associations and relationships among tables. Your UML diagram should also show the methods of your models. -->
+![UML_Class_diagram](https://github.com/WSU-CptS-322-Fall-2023/termproject-cougcoders/assets/119534848/e90e5517-df74-4896-b416-91b116e30f18)
 
 ### 2.2.2 Controller
 
