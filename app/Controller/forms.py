@@ -51,3 +51,14 @@ class ChangeStatusForm(FlaskForm):
         choices=[("Pending"), ("Hired"), ("Approved for Interview"), ("Not Hired")],
     )
     submit = SubmitField("Change Status")
+
+
+class EditStudentProfile(FlaskForm):
+    first_name = StringField("First Name", validators=[DataRequired(), Length(max=64)])
+    last_name = StringField("Last Name", validators=[DataRequired(), Length(max=64)])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    phone_number = StringField("Phone Number", validators=[DataRequired()])
+    graduation_date = DateField("Graduation Date", validators=[DataRequired()])
+    major = StringField("Major", validators=[DataRequired()])
+    gpa = StringField("GPA", validators=[DataRequired()])
+    submit = SubmitField("Save Changes")
