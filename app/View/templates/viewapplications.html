@@ -18,7 +18,7 @@
             Reason: {{application.reason}}
         </td>
         <td width="10%">
-            Status: {{application.status}}
+           {{wtf.quick_form(form, action = url_for('routes.changestatus', applicationid=application.id))}}
         </td>
     </tr>
 </table>

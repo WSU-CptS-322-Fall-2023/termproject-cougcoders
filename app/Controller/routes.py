@@ -11,7 +11,7 @@ from app.Model.models import (
     Application,
     Status,
 )
-from app.Controller.forms import PositionForm, ApplicationForm
+from app.Controller.forms import PositionForm, ApplicationForm, ChangeStatusForm
 
 routes_blueprint = Blueprint("routes", __name__)
 routes_blueprint.template_folder = Config.TEMPLATES_FOLDER
@@ -93,6 +93,7 @@ def apply(positionid):
 @login_required
 def viewapplications(positionid):
     position = ResearchPosition.query.filter_by(id=positionid).first()
+    form = ChangeStatusForm()
     if position is None:
         flash("Position does not exist!")
         return redirect(url_for("routes.index"))
@@ -105,4 +106,28 @@ def viewapplications(positionid):
         title="View Applications",
         applications=applications,
         position=position,
+        form=form,
+    )
+
+
+@routes_blueprint.route("/changestatus/<applicationid>", methods=["GET", "POST"])
+@login_required
+def changestatus(applicationid):
+    form = ChangeStatusForm()
+    application = Application.query.filter_by(id=applicationid).first()
+    if form.validate_on_submit:
+        application.status = form.status.data
+        db.session.commit()
+    return render_template(
+        "viewapplications.html",
+        title="View Applications",
+        form=form,
+        position=Application.query.filter_by(id=applicationid)
+        .first()
+        .research_position,
+        applications=Application.query.filter_by(
+            research_position_id=Application.query.filter_by(id=applicationid)
+            .first()
+            .research_position.id
+        ).all(),
     )
