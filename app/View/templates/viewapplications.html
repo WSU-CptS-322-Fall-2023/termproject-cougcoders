@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+
+<h1> Applications for {{position.title}}</h1>
+
+{% for application in applications %}
+<table class="table table-hover">
+    <tr valign="center">
+        <td width="20%"> Name: {{application.student.first_name}} {{application.student.last_name}} </td>
+        <td width="30">
+            Email: {{application.student.email}}
+        </td>
+        <td width="20%">
+            GPA: {{application.student.gpa}}
+        </td>
+        <td width="30%">
+            Reason: {{application.reason}}
+        </td>
+    </tr>
+</table>
+{% endfor %}
+
+{% endblock %}
