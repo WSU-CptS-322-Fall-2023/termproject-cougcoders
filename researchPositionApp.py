@@ -10,7 +10,6 @@ from app.Model.models import (
     Faculty,
     ProgrammingLanguage,
     Field,
-    Status,
 )
 
 app = create_app(Config)

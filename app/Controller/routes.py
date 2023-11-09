@@ -9,7 +9,6 @@ from app.Model.models import (
     Faculty,
     User,
     Application,
-    Status,
 )
 from app.Controller.forms import PositionForm, ApplicationForm, ChangeStatusForm
 
