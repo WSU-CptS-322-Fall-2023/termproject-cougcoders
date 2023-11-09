@@ -4,7 +4,7 @@
 
 <h1> Applications for {{position.title}}</h1>
 
-{% for application in applications %}
+{% for (application, form) in appforms %}
 <table class="table table-hover">
     <tr valign="center">
         <td width="20%"> Name: {{application.student.first_name}} {{application.student.last_name}} </td>

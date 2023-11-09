@@ -92,6 +92,10 @@ def apply(positionid):
         "application.html", title="Apply", form=form, position=position
     )
 
+def create_app_form(application):
+    form = ChangeStatusForm()
+    form.status.data = application.status
+    return form
 
 @routes_blueprint.route("/viewapplications/<positionid>", methods=["GET"])
 @login_required
@@ -105,12 +109,13 @@ def viewapplications(positionid):
         flash("You must be a faculty member to view applications!")
         return redirect(url_for("routes.index"))
     applications = Application.query.filter_by(research_position_id=positionid).all()
+    forms = map(create_app_form, applications)
     return render_template(
         "viewapplications.html",
         title="View Applications",
         applications=applications,
         position=position,
-        form=form,
+        appforms=zip(applications, forms),
     )
 
 
@@ -122,19 +127,7 @@ def changestatus(applicationid):
     if form.validate_on_submit:
         application.status = form.status.data
         db.session.commit()
-    return render_template(
-        "viewapplications.html",
-        title="View Applications",
-        form=form,
-        position=Application.query.filter_by(id=applicationid)
-        .first()
-        .research_position,
-        applications=Application.query.filter_by(
-            research_position_id=Application.query.filter_by(id=applicationid)
-            .first()
-            .research_position.id
-        ).all(),
-    )
+    return redirect(url_for("routes.viewapplications", positionid=application.research_position_id))
 
 
 @routes_blueprint.route("/editStudentProfile", methods=["GET", "POST"])

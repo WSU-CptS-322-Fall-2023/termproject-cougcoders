@@ -29,13 +29,6 @@ positionFields = db.Table(
     ),
 )
 
-applicationStatus = db.Table(
-    "applicationStatus",
-    db.Column("status_id", db.Integer, db.ForeignKey("status.id")),
-    db.Column("application_id", db.Integer, db.ForeignKey("application.id")),
-)
-
-
 class User(UserMixin, db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
