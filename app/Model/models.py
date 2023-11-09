@@ -29,6 +29,12 @@ positionFields = db.Table(
     ),
 )
 
+applicationStatus = db.Table(
+    "applicationStatus",
+    db.Column("status_id", db.Integer, db.ForeignKey("status.id")),
+    db.Column("application_id", db.Integer, db.ForeignKey("application.id")),
+)
+
 
 class User(UserMixin, db.Model):
     __tablename__ = "user"
@@ -129,5 +135,10 @@ class ProgrammingLanguage(db.Model):
 
 
 class Field(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64))
+
+
+class Status(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(64))

@@ -3,7 +3,14 @@ from app import db
 
 from flask_login import current_user, login_required
 from config import Config
-from app.Model.models import ResearchPosition, Student, Faculty, User, Application
+from app.Model.models import (
+    ResearchPosition,
+    Student,
+    Faculty,
+    User,
+    Application,
+    Status,
+)
 from app.Controller.forms import PositionForm, ApplicationForm
 
 routes_blueprint = Blueprint("routes", __name__)
@@ -69,9 +76,9 @@ def apply(positionid):
             reason=form.reason.data,
             refrence_name=form.refrence_name.data,
             refrence_email=form.refrence_email.data,
-            status="Pending",
             student_id=current_user.id,
             research_position=position,
+            status="Pending",
         )
         db.session.add(application)
         db.session.commit()
