@@ -92,10 +92,12 @@ def apply(positionid):
         "application.html", title="Apply", form=form, position=position
     )
 
+
 def create_app_form(application):
     form = ChangeStatusForm()
     form.status.data = application.status
     return form
+
 
 @routes_blueprint.route("/viewapplications/<positionid>", methods=["GET"])
 @login_required
@@ -127,7 +129,9 @@ def changestatus(applicationid):
     if form.validate_on_submit:
         application.status = form.status.data
         db.session.commit()
-    return redirect(url_for("routes.viewapplications", positionid=application.research_position_id))
+    return redirect(
+        url_for("routes.viewapplications", positionid=application.research_position_id)
+    )
 
 
 @routes_blueprint.route("/editStudentProfile", methods=["GET", "POST"])
@@ -138,9 +142,6 @@ def editStudentProfile():
     form.last_name.data = current_user.last_name
     form.email.data = current_user.email
     form.phone_number.data = current_user.phone_number
-    form.major.data = current_user.major
-    form.gpa.data = current_user.gpa
-    form.graduation_date.data = current_user.graduation_date
     if form.validate_on_submit():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
@@ -152,4 +153,7 @@ def editStudentProfile():
         db.session.commit()
         flash("Changes saved!")
         return redirect(url_for("routes.index"))
+    form.major.data = current_user.major
+    form.gpa.data = current_user.gpa
+    form.graduation_date.data = current_user.graduation_date
     return render_template("editStudentProfile.html", title="Edit Profile", form=form)
