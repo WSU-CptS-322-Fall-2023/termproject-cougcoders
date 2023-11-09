@@ -138,10 +138,6 @@ def changestatus(applicationid):
 @login_required
 def editStudentProfile():
     form = EditStudentProfile()
-    form.first_name.data = current_user.first_name
-    form.last_name.data = current_user.last_name
-    form.email.data = current_user.email
-    form.phone_number.data = current_user.phone_number
     if form.validate_on_submit():
         current_user.first_name = form.first_name.data
         current_user.last_name = form.last_name.data
@@ -153,6 +149,10 @@ def editStudentProfile():
         db.session.commit()
         flash("Changes saved!")
         return redirect(url_for("routes.index"))
+    form.first_name.data = current_user.first_name
+    form.last_name.data = current_user.last_name
+    form.email.data = current_user.email
+    form.phone_number.data = current_user.phone_number
     form.major.data = current_user.major
     form.gpa.data = current_user.gpa
     form.graduation_date.data = current_user.graduation_date
