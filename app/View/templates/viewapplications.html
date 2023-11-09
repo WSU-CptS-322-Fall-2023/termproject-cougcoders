@@ -14,8 +14,11 @@
         <td width="20%">
             GPA: {{application.student.gpa}}
         </td>
-        <td width="30%">
+        <td width="20%">
             Reason: {{application.reason}}
+        </td>
+        <td width="10%">
+           {{wtf.quick_form(form, action = url_for('routes.changestatus', applicationid=application.id))}}
         </td>
     </tr>
 </table>

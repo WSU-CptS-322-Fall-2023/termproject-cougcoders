@@ -3,8 +3,19 @@ from app import db
 
 from flask_login import current_user, login_required
 from config import Config
-from app.Model.models import ResearchPosition, Student, Faculty, User, Application
-from app.Controller.forms import PositionForm, ApplicationForm
+from app.Model.models import (
+    ResearchPosition,
+    Student,
+    Faculty,
+    User,
+    Application,
+)
+from app.Controller.forms import (
+    PositionForm,
+    ApplicationForm,
+    ChangeStatusForm,
+    EditStudentProfile,
+)
 
 routes_blueprint = Blueprint("routes", __name__)
 routes_blueprint.template_folder = Config.TEMPLATES_FOLDER
@@ -69,9 +80,9 @@ def apply(positionid):
             reason=form.reason.data,
             refrence_name=form.refrence_name.data,
             refrence_email=form.refrence_email.data,
-            status="Pending",
             student_id=current_user.id,
             research_position=position,
+            status="Pending",
         )
         db.session.add(application)
         db.session.commit()
@@ -86,6 +97,7 @@ def apply(positionid):
 @login_required
 def viewapplications(positionid):
     position = ResearchPosition.query.filter_by(id=positionid).first()
+    form = ChangeStatusForm()
     if position is None:
         flash("Position does not exist!")
         return redirect(url_for("routes.index"))
@@ -98,4 +110,53 @@ def viewapplications(positionid):
         title="View Applications",
         applications=applications,
         position=position,
+        form=form,
     )
+
+
+@routes_blueprint.route("/changestatus/<applicationid>", methods=["GET", "POST"])
+@login_required
+def changestatus(applicationid):
+    form = ChangeStatusForm()
+    application = Application.query.filter_by(id=applicationid).first()
+    if form.validate_on_submit:
+        application.status = form.status.data
+        db.session.commit()
+    return render_template(
+        "viewapplications.html",
+        title="View Applications",
+        form=form,
+        position=Application.query.filter_by(id=applicationid)
+        .first()
+        .research_position,
+        applications=Application.query.filter_by(
+            research_position_id=Application.query.filter_by(id=applicationid)
+            .first()
+            .research_position.id
+        ).all(),
+    )
+
+
+@routes_blueprint.route("/editStudentProfile", methods=["GET", "POST"])
+@login_required
+def editStudentProfile():
+    form = EditStudentProfile()
+    form.first_name.data = current_user.first_name
+    form.last_name.data = current_user.last_name
+    form.email.data = current_user.email
+    form.phone_number.data = current_user.phone_number
+    form.major.data = current_user.major
+    form.gpa.data = current_user.gpa
+    form.graduation_date.data = current_user.graduation_date
+    if form.validate_on_submit():
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.email = form.email.data
+        current_user.phone_number = form.phone_number.data
+        current_user.major = form.major.data
+        current_user.gpa = form.gpa.data
+        current_user.graduation_date = form.graduation_date.data
+        db.session.commit()
+        flash("Changes saved!")
+        return redirect(url_for("routes.index"))
+    return render_template("editStudentProfile.html", title="Edit Profile", form=form)

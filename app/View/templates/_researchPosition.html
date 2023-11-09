@@ -1,7 +1,7 @@
 <table class="table table-hover">
     <tr valign="center">
         <td width="10%"> {{position.title}} </td>
-        <td width="30">
+        <td width="40">
             Description: {{position.description}}
             <br>
             Additional Requirements: {{position.additional_requirements}}
@@ -20,19 +20,14 @@
         </td>
         <td width="10%">
             {% if position.faculty_id == current_user.id %}
-            <p>This is your research position</p>
+                <p>This is your research position</p>
+                <a href="{{ url_for('routes.viewapplications', positionid=position.id) }}" class="btn btn-primary">View Applications</a>
             {% elif current_user.user_type == "Faculty" %}
-            <p>Faculty members cannot apply to positions</p>
+                <p>Faculty members cannot apply to positions</p>
             {% elif applications | selectattr('research_position_id', 'equalto', position.id) | list %}
-            <p>You have already applied to this position</p>
+                <p>You have already applied to this position</p>
             {% else %}
-            <a href="{{ url_for('routes.apply', positionid=position.id) }}" class="btn btn-primary">Apply</a>
-            {% endif %}
-        </td>
-        <td width="10%">
-            {% if current_user.user_type == "Faculty" %}
-            <a href="{{ url_for('routes.viewapplications', positionid=position.id) }}" class="btn btn-primary">View
-                Applications</a>
+                <a href="{{ url_for('routes.apply', positionid=position.id) }}" class="btn btn-primary">Apply</a>
             {% endif %}
         </td>
     </tr>
