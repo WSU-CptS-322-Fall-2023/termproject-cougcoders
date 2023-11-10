@@ -4,18 +4,32 @@
 
 <h1> Applications for {{position.title}}</h1>
 
-{% for application in applications %}
+{% for (application, form) in appforms %}
 <table class="table table-hover">
     <tr valign="center">
         <td width="20%"> Name: {{application.student.first_name}} {{application.student.last_name}} </td>
-        <td width="30">
+        <td width="10%">
             Email: {{application.student.email}}
         </td>
         <td width="20%">
             GPA: {{application.student.gpa}}
         </td>
-        <td width="30%">
+        <td width="20%">
             Reason: {{application.reason}}
+        </td>
+        <td width="20%">
+            Other Applications: 
+            <br>
+            {% for other_application in application.student.applications %}
+                {% if other_application.research_position_id != position.id %}
+                    Name: {{other_application.research_position.title}} 
+                    ( {{other_application.status}} )
+                    <br>
+                {% endif %}
+            {% endfor %}
+        </td>
+        <td width="10%">
+           {{wtf.quick_form(form, action = url_for('routes.changestatus', applicationid=application.id))}}
         </td>
     </tr>
 </table>

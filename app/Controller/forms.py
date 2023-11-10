@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, PasswordField
+from wtforms import StringField, SubmitField, TextAreaField, PasswordField, SelectField
 from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, Length, DataRequired, Email, EqualTo
 from wtforms_sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
@@ -43,3 +43,22 @@ class ApplicationForm(FlaskForm):
         "Faculty Refrence Email", validators=[DataRequired(), Email()]
     )
     submit = SubmitField("Apply")
+
+
+class ChangeStatusForm(FlaskForm):
+    status = SelectField(
+        "Status",
+        choices=[("Pending"), ("Hired"), ("Approved for Interview"), ("Not Hired")],
+    )
+    submit = SubmitField("Change Status")
+
+
+class EditStudentProfile(FlaskForm):
+    first_name = StringField("First Name", validators=[DataRequired(), Length(max=64)])
+    last_name = StringField("Last Name", validators=[DataRequired(), Length(max=64)])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    phone_number = StringField("Phone Number", validators=[DataRequired()])
+    graduation_date = DateField("Graduation Date", validators=[DataRequired()])
+    major = StringField("Major", validators=[DataRequired()])
+    gpa = StringField("GPA", validators=[DataRequired()])
+    submit = SubmitField("Save Changes")
