@@ -60,6 +60,26 @@ def createposition():
         return redirect(url_for("routes.index"))
     return render_template("createposition.html", title="Create Position", form=form)
 
+@routes_blueprint.route("/deleteposition/<positionid>", methods=["POST", "DELETE"])
+@login_required
+def deleteposition(positionid):
+    if current_user.user_type != "Faculty":
+        flash("You must be a faculty member to delete positions!")
+        return redirect(url_for("routes.index"))
+
+    position = ResearchPosition.query.filter_by(id=positionid).first()
+    if position is None:
+        flash("Position does not exist!")
+        return redirect(url_for("routes.index"))
+
+    if position.faculty_id != current_user.id:
+        flash("You cannot delete another person's position!")
+        return redirect(url_for("routes.index"))
+
+    db.session.delete(position)
+    db.session.commit()
+    flash("Research position successfully deleted!")
+    return redirect(url_for("routes.index"))
 
 @routes_blueprint.route("/apply/<positionid>", methods=["GET", "POST"])
 @login_required

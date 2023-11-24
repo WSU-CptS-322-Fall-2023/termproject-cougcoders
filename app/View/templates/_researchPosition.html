@@ -26,6 +26,9 @@
             {% if position.faculty_id == current_user.id %}
                 <p>This is your research position</p>
                 <a href="{{ url_for('routes.viewapplications', positionid=position.id) }}" class="btn btn-primary">View Applications</a>
+                <form method="post" action="{{ url_for('routes.deleteposition', positionid=position.id) }}">
+                    <input type="submit" class="btn btn-danger" value="Delete">
+                </form>
             {% elif current_user.user_type == "Faculty" %}
                 <p>Faculty members cannot apply to positions</p>
             {% elif applications | selectattr('research_position_id', 'equalto', position.id) | list %}
