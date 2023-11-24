@@ -108,6 +108,9 @@ class ResearchPosition(db.Model):
     applications = db.relationship("Application", backref="research_position")
     faculty_id = db.Column(db.Integer, db.ForeignKey("faculty.id"))
 
+    def get_faculty(self):
+        return Faculty.query.filter_by(id=self.faculty_id).first()
+
     def get_students(self):
         return self.students
 
