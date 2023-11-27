@@ -118,6 +118,19 @@ def create_app_form(application):
     form.status.data = application.status
     return form
 
+@routes_blueprint.route("/withdrawapplication/<positionid>", methods=["POST", "DELETE"])
+@login_required
+def withdraw_application(positionid):
+    application = Application.query.filter_by(student_id=current_user.id, research_position_id=positionid).first()
+    if application is None:
+        flash("You have not applied to this position!")
+        return redirect(url_for("routes.index"))
+
+    db.session.delete(application)
+    db.session.commit()
+
+    flash("Application withdrawn!")
+    return redirect(url_for("routes.index"))
 
 @routes_blueprint.route("/viewapplications/<positionid>", methods=["GET"])
 @login_required
