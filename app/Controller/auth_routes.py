@@ -45,6 +45,10 @@ def student_registration():
                           wsu_id=sform.WSU_id.data,
                           user_type="Student") 
         student.set_password(sform.password.data)
+        for lang in sform.languages.data:
+            student.languages.append(lang)
+        for field in sform.research_fields.data:
+            student.research_fields.append(field)
         db.session.add(student)
         db.session.commit()
         flash('You are now a registered student member!')

@@ -62,3 +62,17 @@ class EditStudentProfile(FlaskForm):
     major = StringField("Major", validators=[DataRequired()])
     gpa = StringField("GPA", validators=[DataRequired()])
     submit = SubmitField("Save Changes")
+    research_fields = QuerySelectMultipleField(
+        "Research Fields",
+        query_factory=lambda: Field.query.all(),
+        get_label=lambda x: x.name,
+        widget=ListWidget(prefix_label=False),
+        option_widget=CheckboxInput(),
+    )
+    languages = QuerySelectMultipleField(
+        "Languages",
+        query_factory=lambda: ProgrammingLanguage.query.all(),
+        get_label=lambda x: x.name,
+        widget=ListWidget(prefix_label=False),
+        option_widget=CheckboxInput()
+    )

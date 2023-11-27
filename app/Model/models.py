@@ -11,8 +11,8 @@ def load_user(id):
     return User.query.get(int(id))
 
 
-languages = db.Table(
-    "languages",
+required_languages = db.Table(
+    "required_languages",
     db.Column(
         "programming_language_id", db.Integer, db.ForeignKey("programming_language.id")
     ),
@@ -26,6 +26,24 @@ positionFields = db.Table(
     db.Column("field_id", db.Integer, db.ForeignKey("field.id")),
     db.Column(
         "research_position_id", db.Integer, db.ForeignKey("research_position.id")
+    ),
+)
+
+languages = db.Table(
+    "languages",
+    db.Column(
+        "programming_language_id", db.Integer, db.ForeignKey("programming_language.id")
+    ),
+    db.Column(
+        "student_id", db.Integer, db.ForeignKey("student.id")
+    ),
+)
+
+studentFields = db.Table(
+    "studentFields",
+    db.Column("field_id", db.Integer, db.ForeignKey("field.id")),
+    db.Column(
+        "student_id", db.Integer, db.ForeignKey("student.id")
     ),
 )
 
@@ -62,6 +80,16 @@ class Student(User):
     gpa = db.Column(db.Float, nullable=True)
     graduation_date = db.Column(db.DateTime, nullable=True)
     applications = db.relationship("Application", backref="student", lazy="dynamic")
+    research_fields = db.relationship(
+        "Field",
+        secondary=studentFields,
+        backref=db.backref("students", lazy="dynamic"),
+    )
+    languages = db.relationship(
+        "ProgrammingLanguage",
+        secondary=languages,
+        backref=db.backref("students", lazy="dynamic"),
+    )
 
     __mapper_args__ = {
         "polymorphic_identity": "Student",
@@ -101,7 +129,7 @@ class ResearchPosition(db.Model):
     )
     languages_required = db.relationship(
         "ProgrammingLanguage",
-        secondary=languages,
+        secondary=required_languages,
         backref=db.backref("research_positions", lazy="dynamic"),
     )
     additional_requirements = db.Column(db.String(1024), nullable=True)

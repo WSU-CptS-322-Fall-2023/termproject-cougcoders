@@ -179,6 +179,10 @@ def editStudentProfile():
         current_user.major = form.major.data
         current_user.gpa = form.gpa.data
         current_user.graduation_date = form.graduation_date.data
+        for lang in form.languages.data:
+            current_user.languages.append(lang)
+        for field in form.research_fields.data:
+            current_user.research_fields.append(field)
         db.session.commit()
         flash("Changes saved!")
         return redirect(url_for("routes.index"))
@@ -189,4 +193,8 @@ def editStudentProfile():
     form.major.data = current_user.major
     form.gpa.data = current_user.gpa
     form.graduation_date.data = current_user.graduation_date
+    for lang in current_user.languages:
+        form.languages.data.append(lang)
+    for field in current_user.research_fields:
+        form.research_fields.data.append(field)
     return render_template("editStudentProfile.html", title="Edit Profile", form=form)
