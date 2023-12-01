@@ -168,8 +168,12 @@ class TestModels(unittest.TestCase):
         # to-do iteration3
 
     def test_Field(self):
-        pass
-        # to-do iteration3
+        fields = ["Cybersecurity", "Artificial Intelligence", "Cloud", "Machine Learning"]
+        for field in fields:
+            db.session.add(Field(name=field))
+        db.session.commit()
+        self.assertEqual(Field.query.first().name, "Cybersecurity")
+        self.assertTrue("Cloud" in x.name for x in Field.query.all())
 
 
 if __name__ == '__main__':
