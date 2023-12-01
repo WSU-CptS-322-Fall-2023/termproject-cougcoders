@@ -164,8 +164,12 @@ class TestModels(unittest.TestCase):
         self.assertEqual(len(Application.query.all()), 2)
 
     def test_ProgrammingLanguage(self):
-        pass
-        # to-do iteration3
+        languages = ["C++", "Python", "Java", "C", "Binary"]
+        for language in languages:
+            db.session.add(ProgrammingLanguage(name=language))
+        db.session.commit()
+        self.assertEqual(ProgrammingLanguage.query.first().name, "C++")
+        self.assertTrue("Java" in x.name for x in ProgrammingLanguage.query.all())
 
     def test_Field(self):
         fields = ["Cybersecurity", "Artificial Intelligence", "Cloud", "Machine Learning"]
