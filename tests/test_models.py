@@ -95,13 +95,37 @@ class TestModels(unittest.TestCase):
         pass
         # to-do iteration3
 
+    # tests for successful insertion of application into sql database
     def test_Application1(self):
-        pass
-        # to-do iteration3
+        s_test = Student(username='CB', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', 
+                        phone_number='1234', wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
+        db.session.add(s_test)
+        db.session.commit()
+        test_app = Application(reason='for money', refrence_name='Sakire', refrence_email='S.AA@wsu.edu',
+                               status='Pending', student_id=User.query.filter_by().first().id)
+        db.session.add(test_app)
+        db.session.commit()
+        self.assertEqual(Application.query.filter_by(id=1).first().student_id, 1)
+        self.assertEqual(Application.query.filter_by(id=1).first().reason, 'for money')
+        self.assertEqual(len(Application.query.all()), 1)
     
+    # tests for successful insertion of two applications for one user into sql database
     def test_Application2(self):
-        pass
-        # to-do iteration3
+        s_test = Student(username='AE', email='A.E@wsu.edu', first_name='Andrew', last_name='Edson',
+                        phone_number='1234', wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
+        db.session.add(s_test)
+        db.session.commit()
+        test_app1 = Application(reason='seems interesting', refrence_name='Andy Ofallon', refrence_email='A.O@wsu.edu',
+                               status='Pending', student_id=User.query.filter_by().first().id)
+        db.session.add(test_app1)
+        db.session.commit()
+        test_app2 = Application(reason='testing application', refrence_name='Sakire', refrence_email='S.AA@wsu.edu',
+                               status='Pending', student_id=User.query.filter_by().first().id)
+        db.session.add(test_app2)
+        db.session.commit()
+        self.assertEqual(Application.query.filter_by(id=1).first().student_id, 1)
+        self.assertEqual(Application.query.filter_by(id=1).first().student_id, Application.query.filter_by(id=2).first().student_id)
+        self.assertEqual(len(Application.query.all()), 2)
 
     def test_ProgrammingLanguage(self):
         pass
