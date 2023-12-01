@@ -88,12 +88,48 @@ class TestModels(unittest.TestCase):
         # to-do iteration3
 
     def test_ResearchPosition1(self):
-        pass
-        # to-do iteration3
+        position = ResearchPosition(
+            title='Research Position 1',
+            description='Test Research Position',
+            start_date=datetime.utcnow(),
+            end_date=datetime.utcnow(),
+            time_commitment='1hr/week',
+            additional_requirements=None,
+            faculty_id=1,
+        )
+        db.session.add(position)
+        db.session.commit()
+        self.assertEqual(ResearchPosition.query.filter_by(id=1).first().title, 'Research Position 1')
+        self.assertTrue(ResearchPosition.query.all() != None)
 
     def test_ResearchPosition2(self):
-        pass
-        # to-do iteration3
+        position = ResearchPosition(
+            title='Research Position 2',
+            description='Test Research Position',
+            start_date=datetime.utcnow(),
+            end_date=datetime.utcnow(),
+            time_commitment='1hr/week',
+            additional_requirements=None,
+            faculty_id=1,
+        )
+
+        langauges = ["C++", "Python", "Java", "C", "Binary"]
+        for lang in langauges:
+            if ProgrammingLanguage.query.filter_by(name=lang).first() is None:
+                db.session.add(ProgrammingLanguage(name=lang))
+        fields = ["Cybersecurity", "Artificial Intelligence", "Cloud", "Machine Learning"]
+        for field in fields:
+            if Field.query.filter_by(name=field).first() is None:
+                db.session.add(Field(name=field))
+        db.session.add(position)
+        db.session.commit()
+
+        position.languages_required.append(ProgrammingLanguage.query.first())
+        position.research_fields.append(Field.query.first())
+
+        db.session.commit()
+        self.assertTrue(ProgrammingLanguage.query.first() in ResearchPosition.query.filter_by(id=1).first().languages_required)
+        self.assertTrue(Field.query.first() in ResearchPosition.query.filter_by(id=1).first().research_fields)
 
     # tests for successful insertion of application into sql database
     def test_Application1(self):
