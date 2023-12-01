@@ -9,7 +9,7 @@ from app import create_app, db
 from app.Model.models import User, Student, Faculty, ResearchPosition, Application, ProgrammingLanguage, Field
 from config import Config
 
-
+  
 class TestConfig(Config):
     TESTING = True
     SQLALCHEMY_DATABASE_URI = 'sqlite://'
@@ -31,15 +31,37 @@ class TestModels(unittest.TestCase):
     #---------------------------------------
     #------------- Model Tests -------------
     
+    # tests for succesful student user insertion into sql database
     def test_User_student(self):
-        # s = Student(username='CB', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', phone_number='1234',
-        #              wsu_id='1234', major='Cpts', gpa='4.0', graduation_date='5/10/2025', user_type="Student")
-        pass
+        test_student = Student(username='CB', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', phone_number='1234',
+                     wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
+        db.session.add(test_student)
+        db.session.commit()
+        self.assertEqual(User.query.filter_by(id=1).first().id , 1) 
+        self.assertTrue(len(User.query.all()) == 1)
 
+    # tests for succesful faculty user insertion into sql database
     def test_User_faculty(self):
-        # f = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay', phone_number='1234',
-        #             wsu_id='1234', user_type="Faculty")
-        pass
+        test_faculty = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay', phone_number='1234',
+                    wsu_id='1111', user_type="Faculty")
+        db.session.add(test_faculty)
+        db.session.commit()
+        self.assertEqual(User.query.filter_by(id=1).first().first_name , 'Sakire') 
+        self.assertTrue(User.query.all() != None)    
+
+    # tests for succesful faculty and student user insertions into sql database
+    def test_student_faculty(self):
+        test_faculty = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay', phone_number='1234',
+                    wsu_id='1111', user_type="Faculty")
+        db.session.add(test_faculty)
+        db.session.commit()
+        test_student = Student(username='CB', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', phone_number='1234',
+                     wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
+        db.session.add(test_student)
+        db.session.commit()
+        self.assertEqual(User.query.filter_by(id=1).first().username , 'SAA') 
+        self.assertEqual(User.query.filter_by(id=2).first().username , 'CB') 
+        self.assertTrue(len(User.query.all()) == 2)  
 
     # tests for correct password hashing of User class model
     def test_password_hashing(self):
