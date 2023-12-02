@@ -1,10 +1,18 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, PasswordField, SelectField
+from wtforms import (
+    StringField,
+    SubmitField,
+    TextAreaField,
+    PasswordField,
+    SelectField,
+    BooleanField,
+    SelectMultipleField,
+)
 from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, Length, DataRequired, Email, EqualTo
 from wtforms_sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from flask_login import current_user
-from app.Model.models import ResearchPosition, ProgrammingLanguage, Field
+from app.Model.models import ResearchPosition, ProgrammingLanguage, Field, User
 from wtforms.widgets import ListWidget, CheckboxInput
 
 
@@ -61,7 +69,6 @@ class EditStudentProfile(FlaskForm):
     graduation_date = DateField("Graduation Date", validators=[DataRequired()])
     major = StringField("Major", validators=[DataRequired()])
     gpa = StringField("GPA", validators=[DataRequired()])
-    submit = SubmitField("Save Changes")
     research_fields = QuerySelectMultipleField(
         "Research Fields",
         query_factory=lambda: Field.query.all(),
@@ -74,5 +81,49 @@ class EditStudentProfile(FlaskForm):
         query_factory=lambda: ProgrammingLanguage.query.all(),
         get_label=lambda x: x.name,
         widget=ListWidget(prefix_label=False),
-        option_widget=CheckboxInput()
+        option_widget=CheckboxInput(),
     )
+    submit = SubmitField("Save Changes")
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user is not None:
+                raise ValidationError(
+                    "Email already exists! Please use a different email address."
+                )
+
+
+class FilterPositions(FlaskForm):
+    research_fields = QuerySelectMultipleField(
+        "Research Fields",
+        query_factory=lambda: Field.query.all(),
+        get_label=lambda x: x.name,
+        widget=ListWidget(prefix_label=False),
+        option_widget=CheckboxInput(),
+    )
+    programming_languages = QuerySelectMultipleField(
+        "Languages",
+        query_factory=lambda: ProgrammingLanguage.query.all(),
+        get_label=lambda x: x.name,
+        widget=ListWidget(prefix_label=False),
+        option_widget=CheckboxInput(),
+    )
+    recommended = BooleanField("Recommended")
+    submit = SubmitField("Filter")
+
+
+class EditFacultyProfile(FlaskForm):
+    first_name = StringField("First Name", validators=[DataRequired(), Length(max=64)])
+    last_name = StringField("Last Name", validators=[DataRequired(), Length(max=64)])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    phone_number = StringField("Phone Number", validators=[DataRequired()])
+    submit = SubmitField("Save Changes")
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user is not None:
+                raise ValidationError(
+                    "Email already exists! Please use a different email address."
+                )

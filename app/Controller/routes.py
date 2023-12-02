@@ -15,6 +15,8 @@ from app.Controller.forms import (
     ApplicationForm,
     ChangeStatusForm,
     EditStudentProfile,
+    FilterPositions,
+    EditFacultyProfile,
 )
 
 routes_blueprint = Blueprint("routes", __name__)
@@ -22,15 +24,40 @@ routes_blueprint.template_folder = Config.TEMPLATES_FOLDER
 
 
 @routes_blueprint.route("/", methods=["GET"])
-@routes_blueprint.route("/index", methods=["GET"])
+@routes_blueprint.route("/index", methods=["GET", "POST"])
 @login_required
 def index():
+    form = FilterPositions()
     if current_user.user_type == "Faculty":
         positions = ResearchPosition.query.filter_by(faculty_id=current_user.id).all()
     else:
         positions = ResearchPosition.query.all()
+        if form.validate_on_submit():
+            if form.recommended.data:
+                student_fields = current_user.research_fields
+                student_languages = current_user.languages
+                for field in student_fields:
+                    positions = list(
+                        filter(lambda x: field in x.research_fields, positions)
+                    )
+                for lang in student_languages:
+                    positions = list(
+                        filter(lambda x: lang in x.languages_required, positions)
+                    )
+            else:
+                for field in form.research_fields.data:
+                    positions = list(
+                        filter(lambda x: field in x.research_fields, positions)
+                    )
+                for lang in form.programming_languages.data:
+                    positions = list(
+                        filter(lambda x: lang in x.languages_required, positions)
+                    )
+
     applications = Application.query.filter_by(student_id=current_user.id).all()
-    return render_template("index.html", positions=positions, applications=applications)
+    return render_template(
+        "index.html", positions=positions, applications=applications, form=form
+    )
 
 
 @routes_blueprint.route("/createposition", methods=["GET", "POST"])
@@ -60,6 +87,7 @@ def createposition():
         return redirect(url_for("routes.index"))
     return render_template("createposition.html", title="Create Position", form=form)
 
+
 @routes_blueprint.route("/deleteposition/<positionid>", methods=["POST", "DELETE"])
 @login_required
 def deleteposition(positionid):
@@ -80,6 +108,7 @@ def deleteposition(positionid):
     db.session.commit()
     flash("Research position successfully deleted!")
     return redirect(url_for("routes.index"))
+
 
 @routes_blueprint.route("/apply/<positionid>", methods=["GET", "POST"])
 @login_required
@@ -118,10 +147,13 @@ def create_app_form(application):
     form.status.data = application.status
     return form
 
+
 @routes_blueprint.route("/withdrawapplication/<positionid>", methods=["POST", "DELETE"])
 @login_required
 def withdraw_application(positionid):
-    application = Application.query.filter_by(student_id=current_user.id, research_position_id=positionid).first()
+    application = Application.query.filter_by(
+        student_id=current_user.id, research_position_id=positionid
+    ).first()
     if application is None:
         flash("You have not applied to this position!")
         return redirect(url_for("routes.index"))
@@ -131,6 +163,7 @@ def withdraw_application(positionid):
 
     flash("Application withdrawn!")
     return redirect(url_for("routes.index"))
+
 
 @routes_blueprint.route("/viewapplications/<positionid>", methods=["GET"])
 @login_required
@@ -179,6 +212,8 @@ def editStudentProfile():
         current_user.major = form.major.data
         current_user.gpa = form.gpa.data
         current_user.graduation_date = form.graduation_date.data
+        current_user.languages = []
+        current_user.research_fields = []
         for lang in form.languages.data:
             current_user.languages.append(lang)
         for field in form.research_fields.data:
@@ -198,3 +233,22 @@ def editStudentProfile():
     for field in current_user.research_fields:
         form.research_fields.data.append(field)
     return render_template("editStudentProfile.html", title="Edit Profile", form=form)
+
+
+@routes_blueprint.route("/editFacultyProfile", methods=["GET", "POST"])
+@login_required
+def editFacultyProfile():
+    form = EditFacultyProfile()
+    if form.validate_on_submit():
+        current_user.first_name = form.first_name.data
+        current_user.last_name = form.last_name.data
+        current_user.email = form.email.data
+        current_user.phone_number = form.phone_number.data
+        db.session.commit()
+        flash("Changes saved!")
+        return redirect(url_for("routes.index"))
+    form.first_name.data = current_user.first_name
+    form.last_name.data = current_user.last_name
+    form.email.data = current_user.email
+    form.phone_number.data = current_user.phone_number
+    return render_template("editFacultyProfile.html", title="Edit Profile", form=form)

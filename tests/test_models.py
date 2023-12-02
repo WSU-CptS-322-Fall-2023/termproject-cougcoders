@@ -72,12 +72,48 @@ class TestModels(unittest.TestCase):
         self.assertTrue(s.check_password('testpswrd'))
 
     def test_ResearchPosition1(self):
-        pass
-        # to-do iteration3
+        position = ResearchPosition(
+            title='Research Position 1',
+            description='Test Research Position',
+            start_date=datetime.utcnow(),
+            end_date=datetime.utcnow(),
+            time_commitment='1hr/week',
+            additional_requirements=None,
+            faculty_id=1,
+        )
+        db.session.add(position)
+        db.session.commit()
+        self.assertEqual(ResearchPosition.query.filter_by(id=1).first().title, 'Research Position 1')
+        self.assertTrue(ResearchPosition.query.all() != None)
 
     def test_ResearchPosition2(self):
-        pass
-        # to-do iteration3
+        position = ResearchPosition(
+            title='Research Position 2',
+            description='Test Research Position',
+            start_date=datetime.utcnow(),
+            end_date=datetime.utcnow(),
+            time_commitment='1hr/week',
+            additional_requirements=None,
+            faculty_id=1,
+        )
+
+        langauges = ["C++", "Python", "Java", "C", "Binary"]
+        for lang in langauges:
+            if ProgrammingLanguage.query.filter_by(name=lang).first() is None:
+                db.session.add(ProgrammingLanguage(name=lang))
+        fields = ["Cybersecurity", "Artificial Intelligence", "Cloud", "Machine Learning"]
+        for field in fields:
+            if Field.query.filter_by(name=field).first() is None:
+                db.session.add(Field(name=field))
+        db.session.add(position)
+        db.session.commit()
+
+        position.languages_required.append(ProgrammingLanguage.query.first())
+        position.research_fields.append(Field.query.first())
+
+        db.session.commit()
+        self.assertTrue(ProgrammingLanguage.query.first() in ResearchPosition.query.filter_by(id=1).first().languages_required)
+        self.assertTrue(Field.query.first() in ResearchPosition.query.filter_by(id=1).first().research_fields)
 
     def test_delete_ResearchPosition(self):
         # f_test = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay',
@@ -129,12 +165,20 @@ class TestModels(unittest.TestCase):
         
 
     def test_ProgrammingLanguage(self):
-        pass
-        # to-do iteration3
+        languages = ["C++", "Python", "Java", "C", "Binary"]
+        for language in languages:
+            db.session.add(ProgrammingLanguage(name=language))
+        db.session.commit()
+        self.assertEqual(ProgrammingLanguage.query.first().name, "C++")
+        self.assertTrue("Java" in x.name for x in ProgrammingLanguage.query.all())
 
     def test_Field(self):
-        pass
-        # to-do iteration3
+        fields = ["Cybersecurity", "Artificial Intelligence", "Cloud", "Machine Learning"]
+        for field in fields:
+            db.session.add(Field(name=field))
+        db.session.commit()
+        self.assertEqual(Field.query.first().name, "Cybersecurity")
+        self.assertTrue("Cloud" in x.name for x in Field.query.all())
 
 
 if __name__ == '__main__':
