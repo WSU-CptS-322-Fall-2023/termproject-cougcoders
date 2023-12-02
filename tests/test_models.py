@@ -60,7 +60,7 @@ class TestModels(unittest.TestCase):
         db.session.add(test_student)
         db.session.commit()
         self.assertEqual(User.query.filter_by(id=1).first().username , 'SAA') 
-        self.assertEqual(User.query.filter_by(id=2).first().username , 'CB') 
+        self.assertEqual(User.query.filter_by(id=2).first().user_type , 'Student') 
         self.assertTrue(len(User.query.all()) == 2)  
 
     # tests for correct password hashing of User class model
@@ -71,27 +71,19 @@ class TestModels(unittest.TestCase):
         self.assertFalse(s.check_password('1234'))
         self.assertTrue(s.check_password('testpswrd'))
 
-    def test_enroll_student(self):
-        pass
-        # to-do iteration3
-
-    def test_enroll_faculty(self):
-        pass
-        # to-do iteration3
-
-    def test_unenroll_student(self):
-        pass
-        # to-do iteration3
-
-    def test_unenroll_faculty(self):
-        pass
-        # to-do iteration3
-
     def test_ResearchPosition1(self):
         pass
         # to-do iteration3
 
     def test_ResearchPosition2(self):
+        pass
+        # to-do iteration3
+
+    def test_delete_ResearchPosition(self):
+        # f_test = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay',
+        #                 phone_number='1234', wsu_id='1111', user_type="Faculty")
+        # db.session.add(f_test)
+        # db.session.commit()
         pass
         # to-do iteration3
 
@@ -107,7 +99,7 @@ class TestModels(unittest.TestCase):
         db.session.commit()
         self.assertEqual(Application.query.filter_by(id=1).first().student_id, 1)
         self.assertEqual(Application.query.filter_by(id=1).first().reason, 'for money')
-        self.assertEqual(len(Application.query.all()), 1)
+        self.assertTrue(len(Application.query.all()), 1)
     
     # tests for successful insertion of two applications for one user into sql database
     def test_Application2(self):
@@ -125,7 +117,16 @@ class TestModels(unittest.TestCase):
         db.session.commit()
         self.assertEqual(Application.query.filter_by(id=1).first().student_id, 1)
         self.assertEqual(Application.query.filter_by(id=1).first().student_id, Application.query.filter_by(id=2).first().student_id)
-        self.assertEqual(len(Application.query.all()), 2)
+        self.assertTrue(len(Application.query.all()), 2)
+
+    def test_delete_Application(self):
+        s_test = Student(username='MB', email='M.B@wsu.edu', first_name='Matthew', last_name='Bruggeman', 
+                        phone_number='1234', wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
+        db.session.add(s_test)
+        db.session.commit()
+
+        self.assertEqual(Application.query.all(), [])
+        
 
     def test_ProgrammingLanguage(self):
         pass
