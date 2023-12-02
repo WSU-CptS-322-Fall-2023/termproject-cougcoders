@@ -64,16 +64,32 @@ class TestConfig(Config):
         # to-do iteration3
 
     def test_deleteposition(request, test_client,init_database):
+        # f_test = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay',
+        #                 phone_number='1234', wsu_id='1111', user_type="Faculty")
+        # db.session.add(f_test)
+        # db.session.commit()
         pass
-        # to-do iteration3
 
     def test_apply(request, test_client,init_database):
         pass
         # to-do iteration3
 
     def test_withdraw_application(request, test_client,init_database):
+        # s_test = Student(username='MB', email='M.B@wsu.edu', first_name='Matthew', last_name='Bruggeman', phone_number='1234',
+        #                 wsu_id='1234', major='Cpts', gpa='4.0', graduation_date=datetime.utcnow(), user_type="Student")
+        # db.session.add(s_test)
+        # db.session.commit()
+
+        # test_delete = Application(reason='testing application', refrence_name='Sakire', refrence_email='S.AA@wsu.edu',
+        #                        status='Pending', student_id=User.query.filter_by().first().id)
+        # db.session.add(test_delete)
+        # db.session.commit()
+        # # withdraw_application(User.query.filter_by(id=1).first())
+        # self.assertEqual(len(Application.query.all()), 1)
+        # db.session.delete(test_delete)
+        # db.session.commit()
+        # self.assertEqual(Application.query.all(), [])
         pass
-        # to-do iteration3
     
     def test_viewapplications(request, test_client,init_database):
         pass

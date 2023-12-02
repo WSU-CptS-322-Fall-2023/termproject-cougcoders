@@ -34,7 +34,7 @@ class TestModels(unittest.TestCase):
     # tests for succesful student user insertion into sql database
     def test_User_student(self):
         test_student = Student(username='CB', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', phone_number='1234',
-                     wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
+                     wsu_id='1234', major='Cpts', gpa='4.0', graduation_date=datetime.utcnow(), user_type="Student")
         db.session.add(test_student)
         db.session.commit()
         self.assertEqual(User.query.filter_by(id=1).first().id , 1) 
@@ -42,8 +42,8 @@ class TestModels(unittest.TestCase):
 
     # tests for succesful faculty user insertion into sql database
     def test_User_faculty(self):
-        test_faculty = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay', phone_number='1234',
-                    wsu_id='1111', user_type="Faculty")
+        test_faculty = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay',
+                            phone_number='1234', wsu_id='1111', user_type="Faculty")
         db.session.add(test_faculty)
         db.session.commit()
         self.assertEqual(User.query.filter_by(id=1).first().first_name , 'Sakire') 
@@ -51,12 +51,12 @@ class TestModels(unittest.TestCase):
 
     # tests for succesful faculty and student user insertions into sql database
     def test_student_faculty(self):
-        test_faculty = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay', phone_number='1234',
-                    wsu_id='1111', user_type="Faculty")
+        test_faculty = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay',
+                            phone_number='1234', wsu_id='1111', user_type="Faculty")
         db.session.add(test_faculty)
         db.session.commit()
         test_student = Student(username='CB', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', phone_number='1234',
-                     wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
+                            wsu_id='1234', major='Cpts', gpa='4.0', graduation_date=datetime.utcnow(), user_type="Student")
         db.session.add(test_student)
         db.session.commit()
         self.assertEqual(User.query.filter_by(id=1).first().username , 'SAA') 
@@ -71,8 +71,9 @@ class TestModels(unittest.TestCase):
         self.assertFalse(s.check_password('1234'))
         self.assertTrue(s.check_password('testpswrd'))
 
+    # tests for successful insertion of Research Position into sql database
     def test_ResearchPosition1(self):
-        position = ResearchPosition(
+        test_position = ResearchPosition(
             title='Research Position 1',
             description='Test Research Position',
             start_date=datetime.utcnow(),
@@ -81,13 +82,14 @@ class TestModels(unittest.TestCase):
             additional_requirements=None,
             faculty_id=1,
         )
-        db.session.add(position)
+        db.session.add(test_position)
         db.session.commit()
         self.assertEqual(ResearchPosition.query.filter_by(id=1).first().title, 'Research Position 1')
         self.assertTrue(ResearchPosition.query.all() != None)
 
+    # tests for successful insertion of Research Position with language and field properties into database
     def test_ResearchPosition2(self):
-        position = ResearchPosition(
+        test_position = ResearchPosition(
             title='Research Position 2',
             description='Test Research Position',
             start_date=datetime.utcnow(),
@@ -105,29 +107,21 @@ class TestModels(unittest.TestCase):
         for field in fields:
             if Field.query.filter_by(name=field).first() is None:
                 db.session.add(Field(name=field))
-        db.session.add(position)
+        db.session.add(test_position)
         db.session.commit()
 
-        position.languages_required.append(ProgrammingLanguage.query.first())
-        position.research_fields.append(Field.query.first())
+        test_position.languages_required.append(ProgrammingLanguage.query.first())
+        test_position.research_fields.append(Field.query.first())
 
         db.session.commit()
         self.assertTrue(ProgrammingLanguage.query.first() in ResearchPosition.query.filter_by(id=1).first().languages_required)
         self.assertTrue(Field.query.first() in ResearchPosition.query.filter_by(id=1).first().research_fields)
 
-    def test_delete_ResearchPosition(self):
-        # f_test = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay',
-        #                 phone_number='1234', wsu_id='1111', user_type="Faculty")
-        # db.session.add(f_test)
-        # db.session.commit()
-        pass
-        # to-do iteration3
-
     # tests for successful insertion of application into sql database
     def test_Application1(self):
-        s_test = Student(username='CB', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', 
-                        phone_number='1234', wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
-        db.session.add(s_test)
+        test_student = Student(username='CB', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', phone_number='1234',
+                        wsu_id='1234', major='Cpts', gpa='4.0', graduation_date=datetime.utcnow(), user_type="Student")
+        db.session.add(test_student)
         db.session.commit()
         test_app = Application(reason='for money', refrence_name='Sakire', refrence_email='S.AA@wsu.edu',
                                status='Pending', student_id=User.query.filter_by().first().id)
@@ -137,11 +131,11 @@ class TestModels(unittest.TestCase):
         self.assertEqual(Application.query.filter_by(id=1).first().reason, 'for money')
         self.assertTrue(len(Application.query.all()), 1)
     
-    # tests for successful insertion of two applications for one user into sql database
+    # tests for successful insertion of two applications for one user into sql database (many-to-one)
     def test_Application2(self):
-        s_test = Student(username='AE', email='A.E@wsu.edu', first_name='Andrew', last_name='Edson',
-                        phone_number='1234', wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
-        db.session.add(s_test)
+        test_student = Student(username='AE', email='A.E@wsu.edu', first_name='Andrew', last_name='Edson', phone_number='1234', 
+                         wsu_id='1234', major='Cpts', gpa='4.0', graduation_date=datetime.utcnow(), user_type="Student")
+        db.session.add(test_student)
         db.session.commit()
         test_app1 = Application(reason='seems interesting', refrence_name='Andy Ofallon', refrence_email='A.O@wsu.edu',
                                status='Pending', student_id=User.query.filter_by().first().id)
@@ -155,26 +149,19 @@ class TestModels(unittest.TestCase):
         self.assertEqual(Application.query.filter_by(id=1).first().student_id, Application.query.filter_by(id=2).first().student_id)
         self.assertTrue(len(Application.query.all()), 2)
 
-    def test_delete_Application(self):
-        s_test = Student(username='MB', email='M.B@wsu.edu', first_name='Matthew', last_name='Bruggeman', 
-                        phone_number='1234', wsu_id='1234', major='Cpts', gpa='4.0', user_type="Student")
-        db.session.add(s_test)
-        db.session.commit()
-
-        self.assertEqual(Application.query.all(), [])
-        
-
+    # tests for successful insertion of Programming Language list into sql database
     def test_ProgrammingLanguage(self):
-        languages = ["C++", "Python", "Java", "C", "Binary"]
-        for language in languages:
+        test_languages = ["C++", "Python", "Java", "C", "Binary"]
+        for language in test_languages:
             db.session.add(ProgrammingLanguage(name=language))
         db.session.commit()
         self.assertEqual(ProgrammingLanguage.query.first().name, "C++")
         self.assertTrue("Java" in x.name for x in ProgrammingLanguage.query.all())
 
+    # tests for successful insertion of Cpts Field list into sql database
     def test_Field(self):
-        fields = ["Cybersecurity", "Artificial Intelligence", "Cloud", "Machine Learning"]
-        for field in fields:
+        test_fields = ["Cybersecurity", "Artificial Intelligence", "Cloud", "Machine Learning"]
+        for field in test_fields:
             db.session.add(Field(name=field))
         db.session.commit()
         self.assertEqual(Field.query.first().name, "Cybersecurity")
