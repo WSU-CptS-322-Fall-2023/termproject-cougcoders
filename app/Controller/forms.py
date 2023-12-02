@@ -12,7 +12,7 @@ from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, Length, DataRequired, Email, EqualTo
 from wtforms_sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from flask_login import current_user
-from app.Model.models import ResearchPosition, ProgrammingLanguage, Field
+from app.Model.models import ResearchPosition, ProgrammingLanguage, Field, User
 from wtforms.widgets import ListWidget, CheckboxInput
 
 
@@ -85,6 +85,14 @@ class EditStudentProfile(FlaskForm):
     )
     submit = SubmitField("Save Changes")
 
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user is not None:
+                raise ValidationError(
+                    "Email already exists! Please use a different email address."
+                )
+
 
 class FilterPositions(FlaskForm):
     research_fields = QuerySelectMultipleField(
@@ -103,3 +111,19 @@ class FilterPositions(FlaskForm):
     )
     recommended = BooleanField("Recommended")
     submit = SubmitField("Filter")
+
+
+class EditFacultyProfile(FlaskForm):
+    first_name = StringField("First Name", validators=[DataRequired(), Length(max=64)])
+    last_name = StringField("Last Name", validators=[DataRequired(), Length(max=64)])
+    email = StringField("Email", validators=[DataRequired(), Email()])
+    phone_number = StringField("Phone Number", validators=[DataRequired()])
+    submit = SubmitField("Save Changes")
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user is not None:
+                raise ValidationError(
+                    "Email already exists! Please use a different email address."
+                )

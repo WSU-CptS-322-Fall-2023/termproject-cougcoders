@@ -33,6 +33,7 @@
                     <li><a>Welcome, {{ "faculty" if current_user.user_type == "Faculty" else "student"}} <b>{{ current_user.first_name }} {{ current_user.last_name }}</b></a></li>
                     {% if current_user.user_type == "Faculty" %}
                         <li><a href="{{ url_for('routes.createposition') }}">Create Position</a></li>
+                        <li><a href="{{ url_for('routes.editFacultyProfile') }}">Edit Profile</a></li>
                     {% else %}
                         <li><a href="{{ url_for('routes.editStudentProfile') }}">Edit Profile</a></li>
                     {% endif %}
