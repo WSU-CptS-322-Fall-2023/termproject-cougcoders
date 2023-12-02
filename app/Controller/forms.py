@@ -1,5 +1,13 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, TextAreaField, PasswordField, SelectField
+from wtforms import (
+    StringField,
+    SubmitField,
+    TextAreaField,
+    PasswordField,
+    SelectField,
+    BooleanField,
+    SelectMultipleField,
+)
 from wtforms.fields.html5 import DateField
 from wtforms.validators import ValidationError, Length, DataRequired, Email, EqualTo
 from wtforms_sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
@@ -61,7 +69,6 @@ class EditStudentProfile(FlaskForm):
     graduation_date = DateField("Graduation Date", validators=[DataRequired()])
     major = StringField("Major", validators=[DataRequired()])
     gpa = StringField("GPA", validators=[DataRequired()])
-    submit = SubmitField("Save Changes")
     research_fields = QuerySelectMultipleField(
         "Research Fields",
         query_factory=lambda: Field.query.all(),
@@ -74,5 +81,25 @@ class EditStudentProfile(FlaskForm):
         query_factory=lambda: ProgrammingLanguage.query.all(),
         get_label=lambda x: x.name,
         widget=ListWidget(prefix_label=False),
-        option_widget=CheckboxInput()
+        option_widget=CheckboxInput(),
     )
+    submit = SubmitField("Save Changes")
+
+
+class FilterPositions(FlaskForm):
+    research_fields = QuerySelectMultipleField(
+        "Research Fields",
+        query_factory=lambda: Field.query.all(),
+        get_label=lambda x: x.name,
+        widget=ListWidget(prefix_label=False),
+        option_widget=CheckboxInput(),
+    )
+    programming_languages = QuerySelectMultipleField(
+        "Languages",
+        query_factory=lambda: ProgrammingLanguage.query.all(),
+        get_label=lambda x: x.name,
+        widget=ListWidget(prefix_label=False),
+        option_widget=CheckboxInput(),
+    )
+    recommended = BooleanField("Recommended")
+    submit = SubmitField("Filter")

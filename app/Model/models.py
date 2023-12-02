@@ -29,23 +29,20 @@ positionFields = db.Table(
     ),
 )
 
-languages = db.Table(
+student_languages = db.Table(
     "languages",
     db.Column(
         "programming_language_id", db.Integer, db.ForeignKey("programming_language.id")
     ),
-    db.Column(
-        "student_id", db.Integer, db.ForeignKey("student.id")
-    ),
+    db.Column("student_id", db.Integer, db.ForeignKey("student.id")),
 )
 
 studentFields = db.Table(
     "studentFields",
     db.Column("field_id", db.Integer, db.ForeignKey("field.id")),
-    db.Column(
-        "student_id", db.Integer, db.ForeignKey("student.id")
-    ),
+    db.Column("student_id", db.Integer, db.ForeignKey("student.id")),
 )
+
 
 class User(UserMixin, db.Model):
     __tablename__ = "user"
@@ -87,7 +84,7 @@ class Student(User):
     )
     languages = db.relationship(
         "ProgrammingLanguage",
-        secondary=languages,
+        secondary=student_languages,
         backref=db.backref("students", lazy="dynamic"),
     )
 

@@ -6,6 +6,39 @@
     <h1>Your Research Positions</h1>
 {% else %}
     <h1>Available Research Positions</h1>
+    {% if form %}
+        <h3>Filter Positions</h3>
+        <form action="" method="post">
+       <table class="table table-striped">
+        {{form.hidden_tag()}}
+            <td>
+                {{ form.research_fields.label }}<br>
+                {{ form.research_fields }}<br>
+                {% for error in form.research_fields.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+            <td>
+                {{ form.programming_languages.label }}<br>
+                {{ form.programming_languages }}<br>
+                {% for error in form.programming_languages.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+
+            </td>
+            <td>
+                {{ form.recommended.label }}<br>
+                {{ form.recommended }}<br>
+                {% for error in form.recommended.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </td>
+            <td>
+                {{ form.submit(class="btn btn-primary") }}
+            </td>
+       </table>
+        </form>
+    {% endif %}
 {% endif %}
 
 {% if positions | length == 0 %}
