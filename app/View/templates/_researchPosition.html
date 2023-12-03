@@ -35,6 +35,7 @@
                 <form method="post" action="{{ url_for('routes.withdraw_application',positionid=position.id) }}">
                     <input type="submit" class="btn btn-danger" value="Withdraw Application">
                 </form>
+                <p>Status: {{current_user.get_application(position.id).status}}</p>
 
             {% else %}
                 <a href="{{ url_for('routes.apply', positionid=position.id) }}" class="btn btn-primary">Apply</a>
