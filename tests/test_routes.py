@@ -36,7 +36,7 @@ def new_user(uname, uemail,pswd):
 # Creates database and user and inserts the user into database
 @pytest.fixture
 def init_database():
-    
+
     db.create_all()
         
     test_user = new_user(uname='Cb', uemail='c.b@wsu.edu',pswd='1234')

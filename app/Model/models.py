@@ -29,20 +29,23 @@ positionFields = db.Table(
     ),
 )
 
-student_languages = db.Table(
+languages = db.Table(
     "languages",
     db.Column(
         "programming_language_id", db.Integer, db.ForeignKey("programming_language.id")
     ),
-    db.Column("student_id", db.Integer, db.ForeignKey("student.id")),
+    db.Column(
+        "student_id", db.Integer, db.ForeignKey("student.id")
+    ),
 )
 
 studentFields = db.Table(
     "studentFields",
     db.Column("field_id", db.Integer, db.ForeignKey("field.id")),
-    db.Column("student_id", db.Integer, db.ForeignKey("student.id")),
+    db.Column(
+        "student_id", db.Integer, db.ForeignKey("student.id")
+    ),
 )
-
 
 class User(UserMixin, db.Model):
     __tablename__ = "user"
@@ -84,7 +87,7 @@ class Student(User):
     )
     languages = db.relationship(
         "ProgrammingLanguage",
-        secondary=student_languages,
+        secondary=languages,
         backref=db.backref("students", lazy="dynamic"),
     )
 
@@ -137,7 +140,7 @@ class ResearchPosition(db.Model):
         return Faculty.query.filter_by(id=self.faculty_id).first()
 
     def get_students(self):
-        return self.students
+        return list(map(lambda x: x.student, Application.query.filter_by(research_position_id=self.id).all()))
 
 
 class Application(db.Model):
