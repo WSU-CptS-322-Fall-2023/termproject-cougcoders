@@ -3,7 +3,7 @@ warnings.filterwarnings("ignore")
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-from datetime import datetime, timedelta
+from datetime import datetime
 import unittest
 from app import create_app, db
 from app.Model.models import User, Student, Faculty, ResearchPosition, Application, ProgrammingLanguage, Field
