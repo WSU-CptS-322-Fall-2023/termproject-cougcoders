@@ -15,21 +15,22 @@ To run this App:
 Windows:    
 ```
 set FLASK_DEBUG=1 && python -m flask run
-
+```
 Mac/Linux:   
 ``` 
 export FLASK_DEBUG=1 && python3 -m flask run
 ```
-- Close the application with the following command:
-Windows:    
+To Close this App:
+- Close the application with the following command:  
 ```
 Ctrl + c 
-
+```
 ### to run tests
 - run tests for Model (unittest)
 ```
-    python -m unittest tests/test_models.py
-    
+python -m unittest tests/test_models.py
+```
 - run tests for routes (pytest)
 ```
-    python -m pytest tests/test_routes.py
+python -m pytest tests/test_routes.py
+```
