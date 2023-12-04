@@ -8,8 +8,8 @@ from wtforms import (
     BooleanField,
     SelectMultipleField,
 )
-from wtforms.fields.html5 import DateField
-from wtforms.validators import ValidationError, Length, DataRequired, Email, EqualTo
+from wtforms.fields.html5 import DateField, DecimalField
+from wtforms.validators import ValidationError, Length, DataRequired, Email, EqualTo, NumberRange
 from wtforms_sqlalchemy.fields import QuerySelectField, QuerySelectMultipleField
 from flask_login import current_user
 from app.Model.models import ResearchPosition, ProgrammingLanguage, Field, User
@@ -68,7 +68,7 @@ class EditStudentProfile(FlaskForm):
     phone_number = StringField("Phone Number", validators=[DataRequired()])
     graduation_date = DateField("Graduation Date", validators=[DataRequired()])
     major = StringField("Major", validators=[DataRequired()])
-    gpa = StringField("GPA", validators=[DataRequired()])
+    gpa = DecimalField("GPA", places=2, validators=[DataRequired(), NumberRange(min=0.0, max=4.0)])
     research_fields = QuerySelectMultipleField(
         "Research Fields",
         query_factory=lambda: Field.query.all(),
