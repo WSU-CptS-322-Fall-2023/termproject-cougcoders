@@ -154,6 +154,7 @@ def test_faculty_login_logout(request, test_client,init_database):
 # tests the '/createposition' page is requested (GET)  AND /PositionForm' form is submitted (POST)
 # checks that response is valid and the class is successfully created in the database
 def test_createposition(test_client,init_database):
+    test_client.get('/logout')
     # create account first
     response = test_client.post('/faculty_register', 
                           data=dict(username='sa@wsu.edu', firstname='Sakire', lastname='Arslan Ay',
@@ -188,6 +189,7 @@ def test_createposition(test_client,init_database):
 # tests the '/deleteposition' page form is submitted (POST)
 # checks that response is valid and the class is successfully deleted in the database
 def test_deleteposition(test_client,init_database):
+    test_client.get('/logout')
     # create account first
     response = test_client.post('/faculty_register', 
                           data=dict(username='sa@wsu.edu', firstname='Sakire', lastname='Arslan Ay',
