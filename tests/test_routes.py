@@ -72,15 +72,15 @@ def test_faculty_register_page(test_client, init_database):
 # tests the '/student_registration' form (POST) request response
 def test_student_registration(request, test_client, init_database):
     response = test_client.post('/student_register', 
-                          data=dict(username='CB', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', phone_number='1234',
-                                    wsu_id='1234', major='Cpts', gpa='4.0', graduation_date=datetime.utcnow(), user_type="Student"),
+                          data=dict(username='test@wsu.edu', firstname='Chance', lastname='Bradford', phoneNum='1234',
+                                    WSU_id='12345', major='Cpts', gpa='4.0', graduation_date='2023-12-06', user_type="Student", password="test", password2="test", languages=[], research_fields=[]),
                           follow_redirects = True)
     assert response.status_code == 200
 
     s = db.session.query(User).filter(Student.username=='CB')
     assert s.first().email == 'c.b@wsu.edu'
     assert s.count() == 1
-    assert b"Student Registration" in response.data   #check contents of rendered html page
+    assert b"You are now a registered student member!" in response.data   #check contents of rendered html page
 
 
 # tests the '/faculty_registration' form (POST) request response
