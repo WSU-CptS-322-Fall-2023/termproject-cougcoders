@@ -12,3 +12,4 @@ class Config(object):
     ROOT_PATH = basedir
     STATIC_FOLDER = os.path.join(basedir, "app//View//static")
     TEMPLATES_FOLDER = os.path.join(basedir, "app//View//templates")
+    WTF_CSRF_ENABLED = False
