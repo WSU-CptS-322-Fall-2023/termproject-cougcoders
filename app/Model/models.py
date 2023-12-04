@@ -34,18 +34,15 @@ languages = db.Table(
     db.Column(
         "programming_language_id", db.Integer, db.ForeignKey("programming_language.id")
     ),
-    db.Column(
-        "student_id", db.Integer, db.ForeignKey("student.id")
-    ),
+    db.Column("student_id", db.Integer, db.ForeignKey("student.id")),
 )
 
 studentFields = db.Table(
     "studentFields",
     db.Column("field_id", db.Integer, db.ForeignKey("field.id")),
-    db.Column(
-        "student_id", db.Integer, db.ForeignKey("student.id")
-    ),
+    db.Column("student_id", db.Integer, db.ForeignKey("student.id")),
 )
+
 
 class User(UserMixin, db.Model):
     __tablename__ = "user"
@@ -100,6 +97,11 @@ class Student(User):
             self.id, self.username, self.email
         )
 
+    def get_application(self, position_id):
+        return Application.query.filter_by(
+            student_id=self.id, research_position_id=position_id
+        ).first()
+
 
 class Faculty(User):
     __tablename__ = "faculty"
@@ -140,7 +142,12 @@ class ResearchPosition(db.Model):
         return Faculty.query.filter_by(id=self.faculty_id).first()
 
     def get_students(self):
-        return self.students
+        return list(
+            map(
+                lambda x: x.student,
+                Application.query.filter_by(research_position_id=self.id).all(),
+            )
+        )
 
 
 class Application(db.Model):
