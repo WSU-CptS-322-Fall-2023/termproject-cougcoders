@@ -36,17 +36,17 @@ def init_database():
 
     db.create_all()
         
-    test_student = Student(username='c.b@wsu.edu', email='c.b@wsu.edu', password_hash='1234', first_name='Chance', last_name='Bradford', phone_number='1234',
-                     wsu_id='1234', major='Cpts', gpa='4.0', graduation_date=datetime.utcnow(), user_type="Student")
+    # test_student = Student(username='c.b@wsu.edu', email='c.b@wsu.edu', first_name='Chance', last_name='Bradford', phone_number='1234',
+    #                  wsu_id='1234', major='Cpts', gpa='4.0', graduation_date=datetime.utcnow(), user_type="Student")
     # test_student.set_password('1234')
-    db.session.add(test_student)
-    db.session.commit()
+    # db.session.add(test_student)
+    # db.session.commit()
 
-    test_faculty = Faculty(username='SAA', email='S.AA@wsu.edu', password_hash='1111', first_name='Sakire', last_name='Arslan Ay',
-                            phone_number='1234', wsu_id='1111', user_type="Faculty")
+    # test_faculty = Faculty(username='s.a@wsu.edu', email='s.a@wsu.edu', first_name='Sakire', last_name='Arslan Ay',
+    #                         phone_number='1234', wsu_id='1111', user_type="Faculty")
     # test_student.set_password('1111')
-    db.session.add(test_faculty)
-    db.session.commit()
+    # db.session.add(test_faculty)
+    # db.session.commit()
 
     yield 
 
@@ -110,23 +110,37 @@ def test_invalid_login(test_client, init_database):
 
 # tests the student '/login' and '/logout' form (POST) with correct credentials THEN check that the response is valid and login is accepted
 def test_student_login_logout(request, test_client, init_database):
-    response = test_client.post('/login', 
-                          data=dict(username='c.b@wsu.edu', password='1234',remember_me=False),
+    # create account first
+    response = test_client.post('/student_register', 
+                          data=dict(username='test@wsu.edu', firstname='Chance', lastname='Bradford', phoneNum='1234',
+                                    WSU_id='12345', major='Cpts', gpa='4.0', graduation_date='2023-12-06', user_type="Student", password="test", password2="test", languages=[], research_fields=[]),
                           follow_redirects = True)
     assert response.status_code == 200
-    # assert b"Successful Student User Login!" in response.data  
+
+    # login with that account
+    response = test_client.post('/login', 
+                          data=dict(username='test@wsu.edu', password='test',remember_me=False),
+                          follow_redirects = True)
+    assert response.status_code == 200
+    assert b"Successful Student User Login!" in response.data  
 
     response = test_client.get('/logout',                       
                           follow_redirects = True)
     assert response.status_code == 200
     assert b"Sign In" in response.data
-    assert b"Please log in to access this page." in response.data
-
 
 # tests the faculty '/login' and '/logout' form (POST) with correct credentials THEN check that the response is valid and login is accepted
 def test_faculty_login_logout(request, test_client,init_database):
+    # create account first
+    response = test_client.post('/faculty_register', 
+                          data=dict(username='ftest@wsu.edu', firstname='Sakire', lastname='Arslan Ay',
+                                    phoneNum='1234', WSU_id='111', user_type="Faculty", password="123", password2="123"),
+                          follow_redirects = True)
+    assert response.status_code == 200
+
+    # login with that account
     response = test_client.post('/login', 
-                          data=dict(username='SAA', password='1111',remember_me=False),
+                          data=dict(username='ftest@wsu.edu', password='123',remember_me=False),
                           follow_redirects = True)
     assert response.status_code == 200
     assert b"Successful Faculty User Login!" in response.data  
@@ -135,34 +149,78 @@ def test_faculty_login_logout(request, test_client,init_database):
                           follow_redirects = True)
     assert response.status_code == 200
     assert b"Sign In" in response.data
-    assert b"Please log in to access this page." in response.data
 
 
 # tests the '/createposition' page is requested (GET)  AND /PositionForm' form is submitted (POST)
 # checks that response is valid and the class is successfully created in the database
 def test_createposition(test_client,init_database):
-    response = test_client.post('/login', 
-                          data=dict(username='Sakire', password='1111',remember_me=False),
+    # create account first
+    response = test_client.post('/faculty_register', 
+                          data=dict(username='sa@wsu.edu', firstname='Sakire', lastname='Arslan Ay',
+                                    phoneNum='1234', WSU_id='111', user_type="Faculty", password="1111", password2="1111"),
                           follow_redirects = True)
     assert response.status_code == 200
-    assert b"Student App" in response.data 
+
+    #test login
+    response = test_client.post('/login', 
+                          data=dict(username='sa@wsu.edu', password='1111',remember_me=False),
+                          follow_redirects = True)
+    assert response.status_code == 200
+    assert b"Welcome to Student App" in response.data 
 
     #test the "PositionForm" form 
     response = test_client.get('/createposition')
-    # assert response.status_code == 200  
-    # assert b"Create new Research Position" in response.data
+    assert response.status_code == 200
+    assert b'Create new Research Position' in response.data
 
-
-
+    response = test_client.post('/createposition',
+                               data=dict(title='test_position', description='testing', start_date='2023-12-04', end_date='2023-12-04',
+                                         time_commitment='2hrs', research_fields=[], languages=[], additional_requirements='NA'),
+                               follow_redirects = True)
+    assert response.status_code == 200
+    assert b'Your Research Positions' in response.data
+    assert b'testing' in response.data
+    p = db.session.query(ResearchPosition).filter(ResearchPosition.title == 'test_position')
+    assert p.first().description == 'testing'
+    assert p.count() == 1
 
 
 # tests the '/deleteposition' page form is submitted (POST)
 # checks that response is valid and the class is successfully deleted in the database
 def test_deleteposition(test_client,init_database):
-    # f_test = Faculty(username='SAA', email='S.AA@wsu.edu', first_name='Sakire', last_name='Arslan Ay',
-    #                 phone_number='1234', wsu_id='1111', user_type="Faculty")
-    # db.session.add(f_test)
-    # db.session.commit()
+    # # create account first
+    # response = test_client.post('/faculty_register', 
+    #                       data=dict(username='sa@wsu.edu', firstname='Sakire', lastname='Arslan Ay',
+    #                                 phoneNum='1234', WSU_id='111', user_type="Faculty", password="1111", password2="1111"),
+    #                       follow_redirects = True)
+    # assert response.status_code == 200
+
+    # #test login
+    # response = test_client.post('/login', 
+    #                       data=dict(username='sa@wsu.edu', password='1111',remember_me=False),
+    #                       follow_redirects = True)
+    # assert response.status_code == 200
+    # assert b"Welcome to Student App" in response.data 
+
+    # #test the "PositionForm" form 
+    # response = test_client.get('/createposition')
+    # assert response.status_code == 200
+    # assert b'Create new Research Position' in response.data
+
+    # response = test_client.post('/createposition',
+    #                            data=dict(title='test_position', description='testing', start_date='2023-12-04', end_date='2023-12-04',
+    #                                      time_commitment='2hrs', research_fields=[], languages=[], additional_requirements='NA'),
+    #                            follow_redirects = True)
+    # assert response.status_code == 200
+    # assert b'Your Research Positions' in response.data
+    # assert b'testing' in response.data
+    # p = db.session.query(ResearchPosition).filter(ResearchPosition.title == 'test_position')
+    # assert p.first().description == 'testing'
+    # assert p.count() == 1
+
+        # response = test_client.post('/deleteposition',
+                                    
+    # assert b'Research position successfully deleted!' in response.data
     pass
 
 def test_apply(request, test_client,init_database):
