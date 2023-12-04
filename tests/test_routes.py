@@ -188,40 +188,43 @@ def test_createposition(test_client,init_database):
 # tests the '/deleteposition' page form is submitted (POST)
 # checks that response is valid and the class is successfully deleted in the database
 def test_deleteposition(test_client,init_database):
-    # # create account first
-    # response = test_client.post('/faculty_register', 
-    #                       data=dict(username='sa@wsu.edu', firstname='Sakire', lastname='Arslan Ay',
-    #                                 phoneNum='1234', WSU_id='111', user_type="Faculty", password="1111", password2="1111"),
-    #                       follow_redirects = True)
-    # assert response.status_code == 200
+    # create account first
+    response = test_client.post('/faculty_register', 
+                          data=dict(username='sa@wsu.edu', firstname='Sakire', lastname='Arslan Ay',
+                                    phoneNum='1234', WSU_id='111', user_type="Faculty", password="1111", password2="1111"),
+                          follow_redirects = True)
+    assert response.status_code == 200
 
-    # #test login
-    # response = test_client.post('/login', 
-    #                       data=dict(username='sa@wsu.edu', password='1111',remember_me=False),
-    #                       follow_redirects = True)
-    # assert response.status_code == 200
-    # assert b"Welcome to Student App" in response.data 
+    #test login
+    response = test_client.post('/login', 
+                          data=dict(username='sa@wsu.edu', password='1111',remember_me=False),
+                          follow_redirects = True)
+    assert response.status_code == 200
+    assert b"Welcome to Student App" in response.data 
 
-    # #test the "PositionForm" form 
-    # response = test_client.get('/createposition')
-    # assert response.status_code == 200
-    # assert b'Create new Research Position' in response.data
+    #test the "PositionForm" form 
+    response = test_client.get('/createposition')
+    assert response.status_code == 200
+    assert b'Create new Research Position' in response.data
 
-    # response = test_client.post('/createposition',
-    #                            data=dict(title='test_position', description='testing', start_date='2023-12-04', end_date='2023-12-04',
-    #                                      time_commitment='2hrs', research_fields=[], languages=[], additional_requirements='NA'),
-    #                            follow_redirects = True)
-    # assert response.status_code == 200
-    # assert b'Your Research Positions' in response.data
-    # assert b'testing' in response.data
-    # p = db.session.query(ResearchPosition).filter(ResearchPosition.title == 'test_position')
-    # assert p.first().description == 'testing'
-    # assert p.count() == 1
+    response = test_client.post('/createposition',
+                               data=dict(title='test_position', description='testing', start_date='2023-12-04', end_date='2023-12-04',
+                                         time_commitment='2hrs', research_fields=[], languages=[], additional_requirements='NA'),
+                               follow_redirects = True)
+    assert response.status_code == 200
+    assert b'Your Research Positions' in response.data
+    assert b'testing' in response.data
+    p = db.session.query(ResearchPosition).filter(ResearchPosition.title == 'test_position')
+    assert p.first().description == 'testing'
+    assert p.count() == 1
 
-        # response = test_client.post('/deleteposition',
-                                    
-    # assert b'Research position successfully deleted!' in response.data
-    pass
+    response = test_client.post('/deleteposition/'+str(p.first().id),
+                                data=dict(),
+                                 follow_redirects = True)
+    assert response.status_code == 200                          
+    assert b'Research position successfully deleted!' in response.data
+    rp = db.session.query(ResearchPosition).all()
+    assert rp == [] 
 
 def test_apply(request, test_client,init_database):
     pass
