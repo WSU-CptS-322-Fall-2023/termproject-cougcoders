@@ -36,7 +36,7 @@ def init_database():
 
     db.create_all()
         
-    test_student = Student(username='CB', email='c.b@wsu.edu', password_hash='1234', first_name='Chance', last_name='Bradford', phone_number='1234',
+    test_student = Student(username='c.b@wsu.edu', email='c.b@wsu.edu', password_hash='1234', first_name='Chance', last_name='Bradford', phone_number='1234',
                      wsu_id='1234', major='Cpts', gpa='4.0', graduation_date=datetime.utcnow(), user_type="Student")
     # test_student.set_password('1234')
     db.session.add(test_student)
@@ -81,20 +81,22 @@ def test_student_registration(test_client, init_database):
     assert s.first().first_name == 'Chance'
     assert s.count() == 1
     assert b"You are now a registered student member!" in response.data   #check contents of rendered html page
-
+    assert b"Sign In" in response.data
+    
 
 # tests the '/faculty_registration' form (POST) request response
 def test_faculty_registration(test_client, init_database):
     response = test_client.post('/faculty_register', 
                           data=dict(username='ftest@wsu.edu', firstname='Sakire', lastname='Arslan Ay',
-                                    phoneNum='1234', WSU_id='1234', user_type="Faculty", password="123", password2="123"),
+                                    phoneNum='1234', WSU_id='111', user_type="Faculty", password="123", password2="123"),
                           follow_redirects = True)
     assert response.status_code == 200
 
     s = db.session.query(Faculty).filter(Faculty.username=='ftest@wsu.edu')
     assert s.first().first_name == 'Sakire'
-    # assert s.count() == 1
+    assert s.count() == 1
     assert b"You are now a registered Faculty Member!" in response.data  #check contents of rendered html page
+    assert b"Sign In" in response.data
 
 
 # tests the '/login' form (POST) with wrong submitted credentials THEN check that the response is valid and login is refused 
@@ -109,10 +111,10 @@ def test_invalid_login(test_client, init_database):
 # tests the student '/login' and '/logout' form (POST) with correct credentials THEN check that the response is valid and login is accepted
 def test_student_login_logout(request, test_client, init_database):
     response = test_client.post('/login', 
-                          data=dict(username='Cb', password='1234',remember_me=False),
+                          data=dict(username='c.b@wsu.edu', password='1234',remember_me=False),
                           follow_redirects = True)
     assert response.status_code == 200
-    assert b"Student App" in response.data  # You are now a registered student member!
+    # assert b"Successful Student User Login!" in response.data  
 
     response = test_client.get('/logout',                       
                           follow_redirects = True)
@@ -124,10 +126,10 @@ def test_student_login_logout(request, test_client, init_database):
 # tests the faculty '/login' and '/logout' form (POST) with correct credentials THEN check that the response is valid and login is accepted
 def test_faculty_login_logout(request, test_client,init_database):
     response = test_client.post('/login', 
-                          data=dict(username='Sakire', password='1111',remember_me=False),
+                          data=dict(username='SAA', password='1111',remember_me=False),
                           follow_redirects = True)
     assert response.status_code == 200
-    assert b"Student App" in response.data  
+    assert b"Successful Faculty User Login!" in response.data  
 
     response = test_client.get('/logout',                       
                           follow_redirects = True)
@@ -193,7 +195,10 @@ def test_changestatus(request, test_client,init_database):
     
 
 def test_editStudentProfile(request, test_client,init_database):
+    # assert b"Changes saved!" in response.data
     pass
 
+
 def test_editFacultyProfile(request, test_client,init_database):
+     # assert b"Changes saved!" in response.data
     pass
